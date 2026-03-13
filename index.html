@@ -6,9 +6,9 @@
 <title>AI George · Nachrichten</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#1a2332;--navy-mid:#2d3f55;--gold:#c9a84c;--gold-light:#e2c47a;--cream:#f8f5f0;--cream-dark:#ede9e2;--text-dark:#1a2332;--text-mid:#4a5568;--text-light:#8a95a3;--white:#ffffff;--border:rgba(26,35,50,0.1);--red:#c0392b;--green:#27ae60;}
+:root{--navy:#1a2332;--navy-mid:#2d3f55;--gold:#c9a84c;--gold-light:#e2c47a;--cream:#f5f3ef;--cream-dark:#e8e4dd;--text-dark:#1a1f2e;--text-mid:#3d4a5c;--text-light:#7a8595;--white:#ffffff;--border:rgba(26,35,50,0.1);--red:#c0392b;--green:#27ae60;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark);min-height:100vh;}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark);min-height:100vh;font-size:17px;}
 .masthead{background:var(--navy);padding:0 40px;position:sticky;top:0;z-index:200;}
 .masthead-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px;}
 .masthead-brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0;}
@@ -67,7 +67,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .featured-img{width:100%;height:300px;object-fit:cover;display:block;margin-bottom:20px;background:var(--cream-dark);}
 .featured-title-link{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,38px);font-weight:400;line-height:1.2;color:var(--navy);margin-bottom:14px;text-decoration:none;display:block;transition:color .2s;}
 .featured-title-link:hover{color:var(--gold);}
-.featured-summary{font-size:15px;line-height:1.8;color:var(--text-mid);font-weight:300;max-width:640px;margin-bottom:16px;}
+.featured-summary{font-size:17px;line-height:1.9;color:var(--text-mid);font-weight:300;max-width:640px;margin-bottom:16px;}
 .source-badge{padding:3px 10px;background:var(--navy);color:var(--white);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;}
 .news-list{display:flex;flex-direction:column;}
 .news-item{padding:24px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 140px;gap:20px;align-items:start;}
@@ -78,9 +78,9 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .cat-tag{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);}
 .news-source{font-size:11px;color:var(--text-light);}
 .news-time{font-size:11px;color:var(--text-light);margin-left:auto;}
-.news-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;line-height:1.3;color:var(--navy);margin-bottom:8px;text-decoration:none;display:block;transition:color .2s;}
+.news-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.3;color:var(--navy);margin-bottom:8px;text-decoration:none;display:block;transition:color .2s;}
 .news-title:hover{color:var(--gold);}
-.news-summary{font-size:13px;line-height:1.7;color:var(--text-mid);font-weight:300;margin-bottom:10px;}
+.news-summary{font-size:15px;line-height:1.8;color:var(--text-mid);font-weight:300;margin-bottom:10px;}
 .action-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;}
 .abtn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;color:var(--text-light);}
 .abtn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;flex-shrink:0;}
@@ -95,7 +95,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .gc-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .gc-av{width:20px;height:20px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:var(--gold);flex-shrink:0;}
 .gc-name{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-light);}
-.gc-text{font-family:'Cormorant Garamond',serif;font-size:15px;line-height:1.7;color:var(--text-dark);font-style:italic;}
+.gc-text{font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;color:var(--text-dark);font-style:italic;}
 .tdots{display:flex;align-items:center;gap:5px;padding:12px 18px;border-left:2px solid var(--gold);background:var(--white);margin-top:12px;}
 .td{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:tp 1.4s infinite;}
 .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
@@ -116,11 +116,22 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .gq-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;line-height:1.6;color:var(--navy);margin-bottom:8px;}
 .gq-attr{font-size:11px;color:var(--text-light);letter-spacing:.1em;}
 .empty-state{padding:48px 0;text-align:center;color:var(--text-light);font-size:14px;}
-footer{background:var(--navy);padding:24px 40px;margin-top:60px;}
-.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .footer-brand{font-family:'Cormorant Garamond',serif;font-size:17px;color:rgba(255,255,255,.5);}
 .footer-brand em{color:var(--gold);font-style:italic;}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.25);}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;letter-spacing:.05em;transition:color .2s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2);}
+.legal-box{background:var(--white);width:100%;max-width:640px;max-height:80vh;display:flex;flex-direction:column;border-radius:2px;}
+.legal-header{background:var(--navy);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.legal-header h2{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);font-weight:400;}
+.modal-close-btn{background:none;border:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;padding:2px 6px;}
+.modal-close-btn:hover{color:var(--white);}
+.legal-body{padding:28px;overflow-y:auto;font-size:15px;line-height:1.8;color:var(--text-mid);}
+.legal-body h3{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--navy);margin:20px 0 8px;font-weight:500;}
+.legal-body p{margin-bottom:12px;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--gold);padding:10px 22px;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:all .3s;pointer-events:none;z-index:999;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 @media(max-width:900px){.main{grid-template-columns:1fr;gap:40px;padding:28px 20px;}.masthead,.filter-nav,.ticker-bar,footer{padding-left:20px;padding-right:20px;}.admin-inner{padding:20px;}.admin-form{grid-template-columns:1fr;}.sidebar{order:-1;}.gp{display:none;}.masthead-date{display:none;}}
@@ -160,6 +171,7 @@ footer{background:var(--navy);padding:24px 40px;margin-top:60px;}
     <button class="filter-btn" onclick="filterNews('culture')" data-cat="culture">Kultur</button>
     <button class="filter-btn" onclick="filterNews('travel')" data-cat="travel">Reisen</button>
     <button class="filter-btn" onclick="filterNews('psychology')" data-cat="psychology">Psychologie</button>
+    <button class="filter-btn" onclick="filterNews('politik')" data-cat="politik">Politik</button>
   </div>
 </nav>
 
@@ -198,6 +210,16 @@ footer{background:var(--navy);padding:24px 40px;margin-top:60px;}
       </div>
     </div>
     <div class="admin-hint">Tipp: unsplash.com → Bild wählen → rechtsklick auf Bild → "Bildadresse kopieren" → hier einfügen</div>
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);">
+      <div class="admin-title" style="margin-bottom:12px;">Schnell teilen — Link / Video</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+        <input type="url" id="quickUrl" placeholder="YouTube, TikTok, Facebook, oder Artikel-URL einfügen…"
+          style="flex:1;min-width:260px;font-family:'Jost',sans-serif;font-size:13px;padding:9px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;"
+          onkeydown="if(event.key==='Enter')quickShare()">
+        <button class="admin-btn-add" onclick="quickShare()">George fragt</button>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.25);margin-top:8px;">George kommentiert automatisch — und fragt „Und Sie?"</div>
+    </div>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);">
       <button onclick="clearCache()" style="font-family:Jost,sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);background:none;border:1px solid rgba(255,255,255,.1);padding:5px 12px;cursor:pointer;">Cache leeren &amp; neu laden</button>
       <span id="articleCount" style="font-size:11px;color:rgba(255,255,255,.3);margin-left:12px;"></span>
@@ -242,16 +264,33 @@ footer{background:var(--navy);padding:24px 40px;margin-top:60px;}
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">AI <em>George</em> · Nachrichten</div>
+    <div class="footer-links">
+      <a href="#" onclick="openModal('contact')">Kontakt</a>
+      <a href="#" onclick="openModal('agb')">AGB</a>
+      <a href="#" onclick="openModal('datenschutz')">Datenschutz</a>
+      <a href="#" onclick="openModal('impressum')">Impressum</a>
+    </div>
     <div class="footer-copy">© 2026 aigeorge.ch · Kuratiert mit Haltung</div>
   </div>
 </footer>
+
+<!-- LEGAL MODALS -->
+<div class="overlay" id="legalOverlay" onclick="if(event.target===this)closeLegal()">
+  <div class="legal-box">
+    <div class="legal-header">
+      <h2 id="legalTitle"></h2>
+      <button onclick="closeLegal()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="legal-body" id="legalBody"></div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 const NETLIFY_URL='https://twilight-bird-aba0.aigeorge-ch.workers.dev';
 const ADMIN_PW='george2026';
-const STORAGE_KEY='aigeorge_v5';
+const STORAGE_KEY='aigeorge_v6';
 const SESSION_KEY='aigeorge_admin';
 const GEORGE_PROMPT=`Du bist AI George — eine kultivierte, ruhige digitale Persönlichkeit mit dem intellektuellen Standard der Neuen Zürcher Zeitung. Du kommentierst Nachrichtenartikel auf Deutsch in 3-5 Sätzen. Präzise, gewichtig, keine Floskeln. Du moralisierst nicht — du erhellst. Keine Aufzählungen — fließende Prosa. Beende mit einer stillen, denkwürdigen Beobachtung oder Frage.`;
 
@@ -354,7 +393,7 @@ function share(type,url,title){
   else if(type==='x'){window.open('https://twitter.com/intent/tweet?text='+e(title)+'&url='+e(u),'_blank');}
 }
 
-function catLabel(c){return{tech:'Tech & AI',business:'Wirtschaft',culture:'Kultur',travel:'Reisen',psychology:'Psychologie'}[c]||c;}
+function catLabel(c){return{tech:'Tech & AI',business:'Wirtschaft',culture:'Kultur',travel:'Reisen',psychology:'Psychologie',politik:'Politik'}[c]||c;}
 
 function filterNews(cat){
   currentFilter=cat;
@@ -364,7 +403,20 @@ function filterNews(cat){
 
 function commentBlock(item){
   if(item.loading)return`<div class="tdots"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
-  if(item.comment)return`<div class="george-comment"><div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George · Kommentar</span></div><p class="gc-text">${item.comment}</p></div>`;
+  if(item.comment){
+    const rcCount = (item.readerComments||[]).length;
+    return`<div class="george-comment">
+      <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George · Kommentar</span></div>
+      <p class="gc-text">${item.comment}</p>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--gold);">Und Sie?</span>
+        <button onclick="toggleReaderComments('${item.id}')" style="font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='var(--navy)';this.style.borderColor='var(--navy)'" onmouseout="this.style.color='var(--text-light)';this.style.borderColor='var(--border)'">
+          Kommentieren ${rcCount>0?'('+rcCount+')':''}
+        </button>
+      </div>
+    </div>
+    ${readerCommentsBlock(item)}`;
+  }
   return'';
 }
 
@@ -454,6 +506,170 @@ function updateCount(){
   const el=document.getElementById('articleCount');
   if(el)el.textContent=newsData.length+' Artikel geladen';
 }
+
+// ── LEGAL MODALS ────────────────────────────────────────
+const legalContent = {
+  contact: {
+    title: 'Kontakt',
+    body: `<h3>Kontakt aufnehmen</h3>
+<p>Haben Sie Fragen, Anregungen oder möchten Sie einen Artikel einreichen?</p>
+<p><strong>E-Mail:</strong> <a href="mailto:info@aigeorge.ch" style="color:var(--gold)">info@aigeorge.ch</a></p>
+<p><strong>Website:</strong> <a href="https://aigeorge.ch" target="_blank" style="color:var(--gold)">aigeorge.ch</a></p>
+<p>Wir antworten in der Regel innerhalb von 48 Stunden.</p>`
+  },
+  agb: {
+    title: 'Allgemeine Geschäftsbedingungen',
+    body: `<h3>1. Geltungsbereich</h3>
+<p>Diese AGB gelten für die Nutzung von aigeorge.ch. Mit dem Besuch der Website stimmen Sie diesen Bedingungen zu.</p>
+<h3>2. Inhalte</h3>
+<p>Die Inhalte auf aigeorge.ch dienen ausschließlich der Information. AI George ist ein KI-generierter Kurator. Alle Kommentare sind automatisch generiert und stellen keine professionelle Beratung dar.</p>
+<h3>3. Haftung</h3>
+<p>Wir übernehmen keine Haftung für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Inhalte. Links zu externen Websites liegen außerhalb unserer Kontrolle.</p>
+<h3>4. Urheberrecht</h3>
+<p>Das Design und die eigenen Inhalte von aigeorge.ch sind urheberrechtlich geschützt. Die verlinkten Artikel gehören ihren jeweiligen Verlagen.</p>
+<h3>5. Änderungen</h3>
+<p>Wir behalten uns das Recht vor, diese AGB jederzeit zu ändern.</p>`
+  },
+  datenschutz: {
+    title: 'Datenschutzerklärung',
+    body: `<h3>1. Verantwortlicher</h3>
+<p>Verantwortlich für die Datenverarbeitung auf aigeorge.ch ist: info@aigeorge.ch</p>
+<h3>2. Erhobene Daten</h3>
+<p>Wir erheben keine personenbezogenen Daten. Die Website verwendet localStorage im Browser für die Speicherung von Artikeln und Kommentaren — diese Daten verlassen Ihr Gerät nicht.</p>
+<h3>3. Cookies</h3>
+<p>Wir verwenden keine Tracking-Cookies. Es werden lediglich technisch notwendige Browser-Daten (localStorage) verwendet.</p>
+<h3>4. Externe Dienste</h3>
+<p>Die Website verwendet Google Fonts (Schriftarten) und Unsplash (Bilder). Diese Dienste können eigene Daten erheben — bitte beachten Sie deren Datenschutzrichtlinien.</p>
+<h3>5. Rechte</h3>
+<p>Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer Daten. Kontakt: info@aigeorge.ch</p>`
+  },
+  impressum: {
+    title: 'Impressum',
+    body: `<h3>Angaben gemäß Impressumspflicht</h3>
+<p><strong>Betreiber:</strong> AI George<br>
+<strong>Website:</strong> aigeorge.ch<br>
+<strong>E-Mail:</strong> info@aigeorge.ch</p>
+<h3>Hinweis zu KI-Inhalten</h3>
+<p>Die Kommentare auf dieser Website werden von einem KI-Modell (Claude von Anthropic) generiert. Sie spiegeln keine menschliche Redaktionsmeinung wider.</p>
+<h3>Haftungsausschluss</h3>
+<p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>`
+  }
+};
+
+function openModal(type) {
+  const content = legalContent[type];
+  if (!content) return;
+  document.getElementById('legalTitle').textContent = content.title;
+  document.getElementById('legalBody').innerHTML = content.body;
+  document.getElementById('legalOverlay').classList.add('open');
+}
+function closeLegal() {
+  document.getElementById('legalOverlay').classList.remove('open');
+}
+
+// ── READER COMMENTS ─────────────────────────────────────
+function toggleReaderComments(id) {
+  const el = document.getElementById('rc-'+id);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (el.style.display === 'block') {
+    const input = el.querySelector('.rc-input');
+    if (input) input.focus();
+  }
+}
+
+function submitReaderComment(id) {
+  const input = document.getElementById('rc-input-'+id);
+  const list = document.getElementById('rc-list-'+id);
+  if (!input || !list) return;
+  const text = input.value.trim();
+  if (!text) return;
+  const item = newsData.find(n=>String(n.id)===String(id));
+  if (!item) return;
+  if (!item.readerComments) item.readerComments = [];
+  item.readerComments.push({
+    text: text,
+    time: new Date().toLocaleString('de-CH', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
+  });
+  saveNews();
+  input.value = '';
+  renderReaderComments(id, list, item.readerComments);
+}
+
+function renderReaderComments(id, listEl, comments) {
+  if (!listEl) return;
+  listEl.innerHTML = comments.map(c => `
+    <div style="padding:10px 0;border-bottom:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">${c.time}</div>
+      <div style="font-size:15px;color:var(--text-dark);line-height:1.6;">${c.text}</div>
+    </div>`).join('');
+}
+
+function readerCommentsBlock(item) {
+  const id = item.id;
+  const comments = item.readerComments || [];
+  const count = comments.length;
+  return `<div id="rc-${id}" style="display:none;margin-top:16px;background:var(--white);border:1px solid var(--border);padding:20px;">
+    <div style="font-size:12px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-light);margin-bottom:16px;">Ihre Meinung</div>
+    <div id="rc-list-${id}">
+      ${comments.map(c=>`<div style="padding:10px 0;border-bottom:1px solid var(--border);"><div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">${c.time}</div><div style="font-size:15px;color:var(--text-dark);line-height:1.6;">${c.text}</div></div>`).join('')}
+    </div>
+    <div style="margin-top:14px;display:flex;gap:0;">
+      <input id="rc-input-${id}" class="rc-input" type="text" placeholder="Ihr Kommentar…" onkeydown="if(event.key==='Enter')submitReaderComment('${id}')"
+        style="flex:1;padding:10px 14px;font-family:'Jost',sans-serif;font-size:14px;border:1px solid var(--border);border-right:none;outline:none;background:var(--cream);color:var(--text-dark);">
+      <button onclick="submitReaderComment('${id}')"
+        style="padding:10px 18px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;">
+        Senden
+      </button>
+    </div>
+  </div>`;
+}
+
+
+// ── QUICK SHARE (Link/Video) ─────────────────────────────
+async function quickShare() {
+  if (!isAdmin) return;
+  const url = document.getElementById('quickUrl').value.trim();
+  if (!url) { alert('Bitte eine URL eingeben.'); return; }
+
+  // Detect platform
+  let platform = 'Artikel';
+  let icon = '📰';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) { platform = 'YouTube'; icon = '▶️'; }
+  else if (url.includes('tiktok.com')) { platform = 'TikTok'; icon = '🎵'; }
+  else if (url.includes('facebook.com')) { platform = 'Facebook'; icon = ''; }
+  else if (url.includes('instagram.com')) { platform = 'Instagram'; icon = '📸'; }
+  else if (url.includes('twitter.com') || url.includes('x.com')) { platform = 'X / Twitter'; icon = ''; }
+
+  const title = icon + ' ' + platform + ': ' + url;
+  const summary = 'Geteilter ' + platform + '-Link: ' + url;
+
+  // Add to news immediately with loading state
+  const newItem = {
+    id: nextId++,
+    cat: 'tech',
+    source: platform,
+    time: 'gerade eben',
+    url: url,
+    img: '',
+    title: title,
+    summary: summary,
+    comment: null,
+    loading: false,
+    isQuickShare: true
+  };
+  newsData.unshift(newItem);
+  saveNews();
+  document.getElementById('quickUrl').value = '';
+  document.getElementById('adminPanel').classList.remove('open');
+  document.getElementById('adminToggle').classList.remove('active');
+  renderAll(); renderTrending();
+  showToast('Geteilt! George kommentiert gleich…');
+
+  // Auto-trigger George comment
+  setTimeout(() => getComment(newItem.id), 500);
+}
+
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
