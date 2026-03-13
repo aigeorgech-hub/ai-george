@@ -1,4 +1,4 @@
-A<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -13,7 +13,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .masthead-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px;}
 .masthead-brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0;}
 .masthead-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);letter-spacing:.02em;}
-.masthead-name em{font-style:italic;color:var(--gold);}A
+.masthead-name em{font-style:italic;color:var(--gold);}
 .masthead-sub{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);}
 .masthead-nav{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;}
 .masthead-date{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.05em;margin-right:4px;}
@@ -111,6 +111,8 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .tr-item:last-child{border-bottom:none;}
 .tr-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream-dark);min-width:26px;line-height:1;margin-top:2px;}
 .tr-title{font-size:12px;line-height:1.5;color:var(--text-dark);}
+.tr-title-link{font-size:13px;line-height:1.5;color:var(--text-dark);text-decoration:none;display:block;transition:color .2s;}
+.tr-title-link:hover{color:var(--gold);}
 .tr-cat{font-size:10px;color:var(--text-light);margin-top:2px;}
 .gq{padding:20px;background:var(--white);border-left:2px solid var(--gold);}
 .gq-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;line-height:1.6;color:var(--navy);margin-bottom:8px;}
@@ -144,7 +146,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
   <div class="masthead-inner">
     <div class="masthead-brand">
       <div class="masthead-name">AI <em>George</em></div>
-      <div class="masthead-sub">Nachrichten</div>
+      <div class="masthead-sub">Nachrichten · KI-Kommentar</div>
     </div>
     <div class="masthead-nav">
       <span class="masthead-date" id="mastheadDate"></span>
@@ -153,8 +155,8 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
         Mit AI George sprechen
       </a>
       <button class="admin-toggle" id="adminToggle" onclick="toggleAdmin()" style="display:none;">+ Artikel</button>
-      <button class="admin-toggle" id="loginBtn" onclick="openLogin()">Admin</button>
-      <button class="logout-btn" id="logoutBtn" onclick="doLogout()" style="display:none;" title="Abmelden">Abmelden</button>
+      <button class="admin-toggle" id="loginBtn" onclick="openLogin()" title="Administration" style="border:none;padding:6px 10px;font-size:16px;letter-spacing:0;opacity:.3;">⚙</button>
+      <button class="logout-btn" id="logoutBtn" onclick="doLogout()" style="display:none;" title="Abmelden">✕</button>
     </div>
   </div>
 </header>
@@ -201,6 +203,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
         <option value="culture">Kultur</option>
         <option value="travel">Reisen</option>
         <option value="psychology">Psychologie</option>
+        <option value="politik">Politik</option>
       </select>
       <div class="full" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
         <button class="admin-btn-add" onclick="addArticle()">Artikel hinzufügen</button>
@@ -290,7 +293,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 <script>
 const NETLIFY_URL='https://twilight-bird-aba0.aigeorge-ch.workers.dev';
 const ADMIN_PW='george2026';
-const STORAGE_KEY='aigeorge_v6';
+const STORAGE_KEY='aigeorge_v8';
 const SESSION_KEY='aigeorge_admin';
 const GEORGE_PROMPT=`Du bist AI George — eine kultivierte, ruhige digitale Persönlichkeit mit dem intellektuellen Standard der Neuen Zürcher Zeitung. Du kommentierst Nachrichtenartikel auf Deutsch in 3-5 Sätzen. Präzise, gewichtig, keine Floskeln. Du moralisierst nicht — du erhellst. Keine Aufzählungen — fließende Prosa. Beende mit einer stillen, denkwürdigen Beobachtung oder Frage.`;
 
@@ -409,10 +412,13 @@ function commentBlock(item){
       <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George · Kommentar</span></div>
       <p class="gc-text">${item.comment}</p>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--gold);">Und Sie?</span>
-        <button onclick="toggleReaderComments('${item.id}')" style="font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='var(--navy)';this.style.borderColor='var(--navy)'" onmouseout="this.style.color='var(--text-light)';this.style.borderColor='var(--border)'">
-          Kommentieren ${rcCount>0?'('+rcCount+')':''}
-        </button>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--gold);letter-spacing:.01em;">Ihre Meinung?</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button onclick="toggleReaderComments('${item.id}')" style="font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;" onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--text-light)'">
+            Kommentieren ${rcCount>0?'('+rcCount+')':''}
+          </button>
+          ${isAdmin?`<button onclick="deleteComment('${item.id}')" style="font-family:'Jost',sans-serif;font-size:10px;color:rgba(192,57,43,.4);background:none;border:none;cursor:pointer;padding:4px;" onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='rgba(192,57,43,.4)'">Kommentar löschen</button>`:''}
+        </div>
       </div>
     </div>
     ${readerCommentsBlock(item)}`;
@@ -471,7 +477,10 @@ function renderTrending(){
   document.getElementById('trendingList').innerHTML=t.map((n,i)=>`
     <div class="tr-item">
       <div class="tr-num">0${i+1}</div>
-      <div><div class="tr-title">${n.title}</div><div class="tr-cat">${catLabel(n.cat)}</div></div>
+      <div>
+        <a href="${n.url||'#'}" target="_blank" rel="noopener" class="tr-title-link">${n.title}</a>
+        <div class="tr-cat">${catLabel(n.cat)}</div>
+      </div>
     </div>`).join('');
 }
 
@@ -568,6 +577,18 @@ function closeLegal() {
 }
 
 // ── READER COMMENTS ─────────────────────────────────────
+function deleteComment(id) {
+  if (!isAdmin) return;
+  const item = newsData.find(n=>String(n.id)===String(id));
+  if (!item) return;
+  item.comment = null;
+  item.loading = false;
+  item.readerComments = [];
+  saveNews();
+  renderAll();
+  showToast('Kommentar gelöscht');
+}
+
 function toggleReaderComments(id) {
   const el = document.getElementById('rc-'+id);
   if (!el) return;
@@ -627,37 +648,82 @@ function readerCommentsBlock(item) {
 
 
 // ── QUICK SHARE (Link/Video) ─────────────────────────────
+function getYouTubeId(url) {
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+async function fetchYouTubeTitle(videoId) {
+  // Use oEmbed API - no key needed
+  try {
+    const res = await fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + videoId + '&format=json');
+    if (res.ok) {
+      const data = await res.json();
+      return { title: data.title, author: data.author_name };
+    }
+  } catch(e) {}
+  return null;
+}
+
 async function quickShare() {
   if (!isAdmin) return;
   const url = document.getElementById('quickUrl').value.trim();
   if (!url) { alert('Bitte eine URL eingeben.'); return; }
 
-  // Detect platform
   let platform = 'Artikel';
-  let icon = '📰';
-  if (url.includes('youtube.com') || url.includes('youtu.be')) { platform = 'YouTube'; icon = '▶️'; }
-  else if (url.includes('tiktok.com')) { platform = 'TikTok'; icon = '🎵'; }
-  else if (url.includes('facebook.com')) { platform = 'Facebook'; icon = ''; }
-  else if (url.includes('instagram.com')) { platform = 'Instagram'; icon = '📸'; }
-  else if (url.includes('twitter.com') || url.includes('x.com')) { platform = 'X / Twitter'; icon = ''; }
+  let img = '';
+  let title = url;
+  let summary = '';
 
-  const title = icon + ' ' + platform + ': ' + url;
-  const summary = 'Geteilter ' + platform + '-Link: ' + url;
+  const ytId = getYouTubeId(url);
 
-  // Add to news immediately with loading state
+  if (ytId) {
+    platform = 'YouTube';
+    img = 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg';
+    // Try to get real title
+    showToast('Lade Video-Info…');
+    const ytInfo = await fetchYouTubeTitle(ytId);
+    if (ytInfo) {
+      title = '▶ ' + ytInfo.title;
+      summary = 'YouTube-Video von ' + ytInfo.author + '. George hat dieses Video für Sie kommentiert.';
+    } else {
+      title = '▶ YouTube-Video';
+      summary = 'YouTube-Video. George hat dieses Video für Sie kommentiert.';
+    }
+  } else if (url.includes('tiktok.com')) {
+    platform = 'TikTok';
+    title = '🎵 TikTok-Video';
+    summary = 'TikTok-Video. George kommentiert.';
+  } else if (url.includes('facebook.com')) {
+    platform = 'Facebook';
+    title = ' Facebook-Beitrag';
+    summary = 'Facebook-Beitrag. George kommentiert.';
+  } else if (url.includes('instagram.com')) {
+    platform = 'Instagram';
+    title = '📸 Instagram-Beitrag';
+    summary = 'Instagram-Beitrag. George kommentiert.';
+  } else if (url.includes('twitter.com') || url.includes('x.com')) {
+    platform = 'X / Twitter';
+    title = ' X-Beitrag';
+    summary = 'X-Beitrag. George kommentiert.';
+  } else {
+    summary = 'Geteilter Link. George kommentiert.';
+  }
+
   const newItem = {
     id: nextId++,
-    cat: 'tech',
+    cat: document.getElementById('aCat').value || 'tech',
     source: platform,
     time: 'gerade eben',
     url: url,
-    img: '',
+    img: img,
     title: title,
     summary: summary,
     comment: null,
     loading: false,
     isQuickShare: true
   };
+
   newsData.unshift(newItem);
   saveNews();
   document.getElementById('quickUrl').value = '';
@@ -665,9 +731,7 @@ async function quickShare() {
   document.getElementById('adminToggle').classList.remove('active');
   renderAll(); renderTrending();
   showToast('Geteilt! George kommentiert gleich…');
-
-  // Auto-trigger George comment
-  setTimeout(() => getComment(newItem.id), 500);
+  setTimeout(() => getComment(newItem.id), 600);
 }
 
 function showToast(msg){
