@@ -89,7 +89,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .george-panel{width:50%;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;}
 .george-photo-area{flex:1;position:relative;overflow:hidden;}
 .george-photo-area img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
-.george-bottom{padding:18px 22px 20px;border-top:1px solid rgba(201,168,76,.2);flex-shrink:0;background:transparent;}
+.george-bottom{position:absolute;bottom:0;left:0;right:0;padding:18px 22px 20px;background:linear-gradient(to bottom, transparent, rgba(26,35,50,.85));flex-shrink:0;}
 .george-bottom-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--white);margin-bottom:4px;}
 .george-bottom-role{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
 
@@ -189,10 +189,10 @@ body{display:flex;flex-direction:column;min-height:100vh;}
     <div class="george-panel">
       <div class="george-photo-area">
         <img src="AIGeorge.png" alt="AI George" onerror="this.src='aigeorge2.png';this.onerror=null;">
-      </div>
-      <div class="george-bottom">
-        <div class="george-bottom-name">AI George</div>
-        <div class="george-bottom-role">Switzerland's First AI Curator &amp; Commentator</div>
+        <div class="george-bottom">
+          <div class="george-bottom-name">AI George</div>
+          <div class="george-bottom-role">Switzerland's First AI Curator &amp; Commentator</div>
+        </div>
       </div>
     </div>
 
@@ -402,7 +402,7 @@ document.getElementById('userInput').focus();
       <br>
       <p>Betrieben durch Swiss Halley AG / Fireflies Travel Community.</p>
       <br>
-      <p>E-Mail: <a href="mailto:aigeorge.ch@gmail.com" style="color:var(--gold)">aigeorge.ch@gmail.com</a></p>
+      <p>E-Mail: <a href="/cdn-cgi/l/email-protection#3f5e56585a504d585a115c577f58525e5653115c5052" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="f899919f9d978a9f9dd69b90b89f95999194d69b9795">[email&#160;protected]</span></a></p>
       <br>
       <p>Weil am Rhein, Deutschland / Schweiz</p>
     </div>
@@ -447,17 +447,6 @@ document.getElementById('userInput').focus();
       <p>Betreiber: Swiss Halley AG / Fireflies Travel Community<br>
       Weil am Rhein, Deutschland</p>
       <br>
-      <p>E-Mail: aigeorge.ch@gmail.com</p>
+      <p>E-Mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a7b737d7f75687d7f3479725a7d777b737634797577">[email&#160;protected]</a></p>
       <br>
-      <p>Haftungshinweis: Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Die Inhalte werden teilweise durch KI generiert.</p>
-    </div>
-  </div>
-</div>
-
-<script>
-function openModal(id){document.getElementById('modal-'+id).classList.add('open');}
-function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
-</script>
-
-</body>
-</html>
+      <p>Haftungshinweis: Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Die Inhalte werden teilwe
