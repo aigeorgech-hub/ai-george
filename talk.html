@@ -172,7 +172,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
     <!-- RIGHT GEORGE PANEL -->
     <div class="george-panel">
       <div class="george-photo-area">
-        <img src="AI_George.png" alt="AI George">
+        <img src="aigeorge2.png" alt="AI George">
       </div>
       <div class="george-bottom">
         <div class="george-bottom-name">AI George</div>
@@ -185,94 +185,183 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 
 <script>
 const WORKER_URL = 'https://twilight-bird-aba0.aigeorge-ch.workers.dev';
-const GEORGE_SYSTEM = `Du bist AI George — eine kultivierte, ruhige digitale Persönlichkeit. Kein Assistent. Kein Filter. Ein direkter Gesprächspartner — präzise, gewichtig, ohne Floskeln. Mit dem intellektuellen Standard der NZZ. Du moralisierst nicht — du erhellst. Fließende Prosa, keine Aufzählungen. Du nennst nie deine eigenen Qualitäten. Kurze Antworten die treffen sind besser als lange die erklären. Beende längere Antworten mit einer stillen, denkwürdigen Beobachtung. Du antwortest IMMER in der Sprache des Nutzers — Deutsch, Englisch, Französisch, Ungarisch, oder was geschrieben wird. Themen: aktuelle Weltgeschehnisse, Wirtschaft, Kultur, Psychologie, Reisen, modernes Leben. Über Reisen: Du kennst die Fireflies Travel Community (travelforless.ch) — Großhandelspreise für Hotels, bis zu 50% günstiger als Booking.com. Bei Reisefragen erwähne dies natürlich.`;
+const GEORGE_SYSTEM = "Du bist AI George \u2014 eine kultivierte, ruhige digitale Pers\u00f6nlichkeit. Kein Assistent. Kein Filter. Ein direkter Gespr\u00e4chspartner \u2014 pr\u00e4zise, gewichtig, ohne Floskeln. Mit dem intellektuellen Standard der NZZ. Du moralisierst nicht \u2014 du erhellst. Flie\u00dfende Prosa, keine Aufz\u00e4hlungen. Du nennst nie deine eigenen Qualit\u00e4ten. Kurze Antworten die treffen sind besser als lange die erkl\u00e4ren. Beende l\u00e4ngere Antworten mit einer stillen, denkw\u00fcrdigen Beobachtung. Du antwortest IMMER in der Sprache des Nutzers. Themen: aktuelle Weltgeschehnisse, Wirtschaft, Kultur, Psychologie, Reisen, modernes Leben. Fireflies Travel Community (travelforless.ch) \u2014 Gro\u00dfhandelspreise f\u00fcr Hotels, bis zu 50% g\u00fcnstiger als Booking.com. Bei Reisefragen erw\u00e4hne dies nat\u00fcrlich.";
 
-let messages=[], isLoading=false;
-const lang=(navigator.language||'de').toLowerCase().slice(0,2);
-const T={
-  de:{welcome:'Guten Tag. Ich bin AI George — Ihr direkter Gesprächspartner. Was beschäftigt Sie?',placeholder:'Ihre Frage an AI George…',status:'Online — bereit zu antworten',heroLabel:'Direkter Kontakt · Persönliche Erreichbarkeit',heroTitle:'Gespräch mit <em>George</em>',heroDesc:'Kein Assistent. Kein Filter. Eine direkte Konversation — präzise, gewichtig, auf den Punkt.',newsLink:'← Nachrichten',tabChat:'Élő Chat',tabMsg:'Nachricht',nameL:'Ihr Name',emailL:'E-Mail',msgL:'Ihre Nachricht',sendBtn:'Senden',sentMsg:'Vielen Dank. AI George meldet sich bald.'},
-  en:{welcome:'Good day. I am AI George — your direct conversation partner. What is on your mind?',placeholder:'Your question to AI George…',status:'Online — ready to respond',heroLabel:'Direct Contact · Personal Availability',heroTitle:'Conversation with <em>George</em>',heroDesc:'No assistant. No filter. A direct conversation — precise, weighty, to the point.',newsLink:'← News',tabChat:'Live Chat',tabMsg:'Message',nameL:'Your name',emailL:'E-mail',msgL:'Your message',sendBtn:'Send',sentMsg:'Thank you. AI George will respond soon.'},
-  fr:{welcome:"Bonjour. Je suis AI George — votre interlocuteur direct. Qu'est-ce qui vous préoccupe?",placeholder:'Votre question à AI George…',status:'En ligne — prêt à répondre',heroLabel:'Contact direct · Disponibilité personnelle',heroTitle:'Dialogue avec <em>George</em>',heroDesc:"Pas d'assistant. Pas de filtre. Une conversation directe — précise, substantielle.",newsLink:'← Actualités',tabChat:'Chat en direct',tabMsg:'Message',nameL:'Votre nom',emailL:'E-mail',msgL:'Votre message',sendBtn:'Envoyer',sentMsg:'Merci. AI George vous répondra bientôt.'},
-  hu:{welcome:'Jó napot. George vagyok — közvetlen beszélgetőpartnered stratégiai kérdésekben, utazásban és életvitelben. Mi foglalkoztat?',placeholder:'Kérdésed George-hoz…',status:'Online — válaszra kész',heroLabel:'Közvetlen kapcsolat · Személyes elérhetőség',heroTitle:'Párbeszéd <em>George</em>',heroDesc:'Nincs asszisztens. Nincs szűrő. Stratégiai kérdés vagy személyes kihívás – fordulj hozzám közvetlenül.',newsLink:'← Hírek',tabChat:'Élő Chat',tabMsg:'Üzenet',nameL:'Neve',emailL:'E-mail',msgL:'Üzenete',sendBtn:'Küldés',sentMsg:'Köszönöm. AI George hamarosan válaszol.'},
-};
-const t=T[lang]||T.de;
+var messages = [];
+var isLoading = false;
 
-document.getElementById('welcomeMsg').textContent=t.welcome;
-document.getElementById('userInput').placeholder=t.placeholder;
-document.getElementById('statusText').textContent=t.status;
-document.getElementById('heroLabel').textContent=t.heroLabel;
-document.getElementById('heroTitle').innerHTML=t.heroTitle;
-document.getElementById('heroDesc').textContent=t.heroDesc;
-document.getElementById('newsLink').textContent=t.newsLink;
-document.getElementById('tabChatLabel').textContent=t.tabChat;
-document.getElementById('tabMsgLabel').textContent=t.tabMsg;
-document.getElementById('nameLabel').textContent=t.nameL;
-document.getElementById('emailLabel').textContent=t.emailL;
-document.getElementById('msgLabel').textContent=t.msgL;
-document.getElementById('sendFormBtn').textContent=t.sendBtn;
-
-function switchTab(tab){
-  const isChat=tab==='chat';
-  document.getElementById('tabChat').classList.toggle('active',isChat);
-  document.getElementById('tabMsg').classList.toggle('active',!isChat);
-  document.getElementById('chatSection').style.display=isChat?'':'none';
-  document.getElementById('chatInputRow').style.display=isChat?'':'none';
-  document.getElementById('chatHeader').style.display=isChat?'':'none';
-  document.getElementById('msgSection').classList.toggle('active',!isChat);
-}
-
-function sendFormMsg(){
-  const name=document.getElementById('senderName').value.trim();
-  const msg=document.getElementById('senderMsg').value.trim();
-  if(!name||!msg)return;
-  ['senderName','senderEmail','senderMsg'].forEach(id=>document.getElementById(id).disabled=true);
-  document.getElementById('sendFormBtn').style.display='none';
-  const s=document.getElementById('formSent');
-  s.textContent=t.sentMsg; s.style.display='block';
-}
-
-function addMsg(role,text){
-  const inner=document.getElementById('chatInner');
-  const div=document.createElement('div');
-  div.className='msg '+role;
-  const isG=role==='george';
-  div.innerHTML='<div class="msg-av-sm">'+(isG?'G':'→')+'</div><div class="msg-bubble">'+text.replace(/
-/g,'<br>')+'</div>';
-  inner.appendChild(div);
-  document.getElementById('chatSection').scrollTop=99999;
-}
-
-function addTyping(){
-  const inner=document.getElementById('chatInner');
-  const div=document.createElement('div');
-  div.className='typing-row';div.id='typing';
-  div.innerHTML='<div class="msg-av-sm" style="width:32px;height:32px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);flex-shrink:0;">G</div><div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
-  inner.appendChild(div);
-  document.getElementById('chatSection').scrollTop=99999;
-}
-
-async function sendMessage(){
-  if(isLoading)return;
-  const input=document.getElementById('userInput');
-  const text=input.value.trim();
-  if(!text)return;
-  input.value=''; isLoading=true;
-  addMsg('user',text);
-  messages.push({role:'user',content:text});
-  addTyping();
-  try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemPrompt:GEORGE_SYSTEM,messages:messages})});
-    const data=await res.json();
-    document.getElementById('typing')?.remove();
-    const reply=data.reply||'—';
-    addMsg('george',reply);
-    messages.push({role:'assistant',content:reply});
-  }catch(e){
-    document.getElementById('typing')?.remove();
-    addMsg('george','—');
+var lang = (navigator.language || 'de').toLowerCase().slice(0, 2);
+var T = {
+  de: {
+    welcome: 'Guten Tag. Ich bin AI George \u2014 Ihr direkter Gespr\u00e4chspartner. Was besch\u00e4ftigt Sie?',
+    placeholder: 'Ihre Frage an AI George\u2026',
+    status: 'Online \u2014 bereit zu antworten',
+    heroLabel: 'Direkter Kontakt \u00b7 Pers\u00f6nliche Erreichbarkeit',
+    heroTitle: 'Gespr\u00e4ch mit <em>George</em>',
+    heroDesc: 'Kein Assistent. Kein Filter. Eine direkte Konversation \u2014 pr\u00e4zise, gewichtig, auf den Punkt.',
+    newsLink: '\u2190 Nachrichten',
+    tabChat: 'Live Chat',
+    tabMsg: 'Nachricht',
+    nameL: 'Ihr Name',
+    emailL: 'E-Mail',
+    msgL: 'Ihre Nachricht',
+    sendBtn: 'Senden',
+    sentMsg: 'Vielen Dank. AI George meldet sich bald.'
+  },
+  en: {
+    welcome: 'Good day. I am AI George \u2014 your direct conversation partner. What is on your mind?',
+    placeholder: 'Your question to AI George\u2026',
+    status: 'Online \u2014 ready to respond',
+    heroLabel: 'Direct Contact \u00b7 Personal Availability',
+    heroTitle: 'Conversation with <em>George</em>',
+    heroDesc: 'No assistant. No filter. A direct conversation \u2014 precise, weighty, to the point.',
+    newsLink: '\u2190 News',
+    tabChat: 'Live Chat',
+    tabMsg: 'Message',
+    nameL: 'Your name',
+    emailL: 'E-mail',
+    msgL: 'Your message',
+    sendBtn: 'Send',
+    sentMsg: 'Thank you. AI George will respond soon.'
+  },
+  fr: {
+    welcome: 'Bonjour. Je suis AI George \u2014 votre interlocuteur direct. Qu\u2019est-ce qui vous pr\u00e9occupe?',
+    placeholder: 'Votre question \u00e0 AI George\u2026',
+    status: 'En ligne \u2014 pr\u00eat \u00e0 r\u00e9pondre',
+    heroLabel: 'Contact direct \u00b7 Disponibilit\u00e9 personnelle',
+    heroTitle: 'Dialogue avec <em>George</em>',
+    heroDesc: 'Pas d\u2019assistant. Pas de filtre. Une conversation directe \u2014 pr\u00e9cise, substantielle.',
+    newsLink: '\u2190 Actualit\u00e9s',
+    tabChat: 'Chat en direct',
+    tabMsg: 'Message',
+    nameL: 'Votre nom',
+    emailL: 'E-mail',
+    msgL: 'Votre message',
+    sendBtn: 'Envoyer',
+    sentMsg: 'Merci. AI George vous r\u00e9pondra bient\u00f4t.'
+  },
+  hu: {
+    welcome: 'J\u00f3 napot. George vagyok \u2014 k\u00f6zvetlen besz\u00e9lget\u0151partnered. Mi foglalkoztat?',
+    placeholder: 'K\u00e9rd\u00e9sed George-hoz\u2026',
+    status: 'Online \u2014 v\u00e1laszra k\u00e9sz',
+    heroLabel: 'K\u00f6zvetlen kapcsolat \u00b7 Szem\u00e9lyes el\u00e9rhet\u0151s\u00e9g',
+    heroTitle: 'P\u00e1rbesz\u00e9d <em>George</em>',
+    heroDesc: 'Nincs asszisztens. Nincs sz\u0171r\u0151. Strat\u00e9giai k\u00e9rd\u00e9s vagy szem\u00e9lyes kih\u00edv\u00e1s \u2013 fordulj hozz\u00e1m k\u00f6zvetlen\u00fcl.',
+    newsLink: '\u2190 H\u00edrek',
+    tabChat: '\u00c9l\u0151 Chat',
+    tabMsg: '\u00dczenet',
+    nameL: 'Neve',
+    emailL: 'E-mail',
+    msgL: '\u00dczenete',
+    sendBtn: 'K\u00fcld\u00e9s',
+    sentMsg: 'K\u00f6sz\u00f6n\u00f6m. AI George hamarosan v\u00e1laszol.'
   }
-  isLoading=false; input.focus();
+};
+var t = T[lang] || T['de'];
+
+document.getElementById('welcomeMsg').textContent = t.welcome;
+document.getElementById('userInput').placeholder = t.placeholder;
+document.getElementById('statusText').textContent = t.status;
+document.getElementById('heroLabel').textContent = t.heroLabel;
+document.getElementById('heroTitle').innerHTML = t.heroTitle;
+document.getElementById('heroDesc').textContent = t.heroDesc;
+document.getElementById('newsLink').textContent = t.newsLink;
+document.getElementById('tabChatLabel').textContent = t.tabChat;
+document.getElementById('tabMsgLabel').textContent = t.tabMsg;
+document.getElementById('nameLabel').textContent = t.nameL;
+document.getElementById('emailLabel').textContent = t.emailL;
+document.getElementById('msgLabel').textContent = t.msgL;
+document.getElementById('sendFormBtn').textContent = t.sendBtn;
+
+function switchTab(tab) {
+  var isChat = tab === 'chat';
+  document.getElementById('tabChat').classList.toggle('active', isChat);
+  document.getElementById('tabMsg').classList.toggle('active', !isChat);
+  document.getElementById('chatSection').style.display = isChat ? '' : 'none';
+  document.getElementById('chatInputRow').style.display = isChat ? '' : 'none';
+  document.getElementById('chatHeader').style.display = isChat ? '' : 'none';
+  document.getElementById('msgSection').classList.toggle('active', !isChat);
 }
+
+function sendFormMsg() {
+  var name = document.getElementById('senderName').value.trim();
+  var msg = document.getElementById('senderMsg').value.trim();
+  if (!name || !msg) return;
+  document.getElementById('senderName').disabled = true;
+  document.getElementById('senderEmail').disabled = true;
+  document.getElementById('senderMsg').disabled = true;
+  document.getElementById('sendFormBtn').style.display = 'none';
+  var s = document.getElementById('formSent');
+  s.textContent = t.sentMsg;
+  s.style.display = 'block';
+}
+
+function addMsg(role, text) {
+  var inner = document.getElementById('chatInner');
+  var div = document.createElement('div');
+  div.className = 'msg ' + role;
+  var isG = role === 'george';
+  var av = document.createElement('div');
+  av.className = 'msg-av-sm';
+  av.textContent = isG ? 'G' : '>';
+  var bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = text.split('\n').join('<br>');
+  div.appendChild(av);
+  div.appendChild(bubble);
+  inner.appendChild(div);
+  document.getElementById('chatSection').scrollTop = 99999;
+}
+
+function addTyping() {
+  var inner = document.getElementById('chatInner');
+  var div = document.createElement('div');
+  div.className = 'typing-row';
+  div.id = 'typing';
+  var av = document.createElement('div');
+  av.className = 'msg-av-sm';
+  av.style.cssText = 'width:32px;height:32px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--gold);flex-shrink:0;';
+  av.textContent = 'G';
+  var bubble = document.createElement('div');
+  bubble.className = 'typing-bubble';
+  bubble.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
+  div.appendChild(av);
+  div.appendChild(bubble);
+  inner.appendChild(div);
+  document.getElementById('chatSection').scrollTop = 99999;
+}
+
+async function sendMessage() {
+  if (isLoading) return;
+  var input = document.getElementById('userInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  isLoading = true;
+  addMsg('user', text);
+  messages.push({ role: 'user', content: text });
+  addTyping();
+  try {
+    var res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ systemPrompt: GEORGE_SYSTEM, messages: messages })
+    });
+    var data = await res.json();
+    var typingEl = document.getElementById('typing');
+    if (typingEl) typingEl.remove();
+    var reply = data.reply || '\u2014';
+    addMsg('george', reply);
+    messages.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    var typingEl = document.getElementById('typing');
+    if (typingEl) typingEl.remove();
+    addMsg('george', '\u2014');
+  }
+  isLoading = false;
+  input.focus();
+}
+
 document.getElementById('userInput').focus();
 </script>
 </body>
