@@ -89,9 +89,25 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .george-panel{width:50%;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;}
 .george-photo-area{flex:1;position:relative;overflow:hidden;}
 .george-photo-area img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
-.george-bottom{padding:18px 22px 20px;border-top:2px solid rgba(201,168,76,.2);flex-shrink:0;}
+.george-bottom{padding:18px 22px 20px;border-top:1px solid rgba(201,168,76,.2);flex-shrink:0;background:transparent;}
 .george-bottom-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--white);margin-bottom:4px;}
 .george-bottom-role{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
+
+/* FOOTER */
+.site-footer{background:var(--navy);padding:16px 40px;flex-shrink:0;border-top:1px solid rgba(201,168,76,.15);}
+.footer-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;cursor:pointer;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,35,50,.7);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--white);max-width:600px;width:90%;max-height:80vh;overflow-y:auto;padding:40px;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--navy);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.modal-body{font-size:13px;line-height:1.8;color:var(--text-mid);}
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);margin-top:-8px;}
 
 @media(max-width:780px){
   .george-panel{display:none;}
@@ -364,5 +380,84 @@ async function sendMessage() {
 
 document.getElementById('userInput').focus();
 </script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a onclick="openModal('kontakt')">Kontakt</a>
+      <a onclick="openModal('agb')">AGB</a>
+      <a onclick="openModal('datenschutz')">Datenschutz</a>
+      <a onclick="openModal('impressum')">Impressum</a>
+    </div>
+    <div class="footer-copy">© 2026 AI George · aigeorge.ch</div>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-kontakt" onclick="if(event.target===this)closeModal('kontakt')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('kontakt')">✕</button>
+    <div class="modal-title">Kontakt</div>
+    <div class="modal-body">
+      <p><strong>AI George</strong> ist ein KI-gestützter Nachrichtenkurator und Gesprächspartner.</p>
+      <br>
+      <p>Betrieben durch Swiss Halley AG / Fireflies Travel Community.</p>
+      <br>
+      <p>E-Mail: <a href="mailto:aigeorge.ch@gmail.com" style="color:var(--gold)">aigeorge.ch@gmail.com</a></p>
+      <br>
+      <p>Weil am Rhein, Deutschland / Schweiz</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-agb" onclick="if(event.target===this)closeModal('agb')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('agb')">✕</button>
+    <div class="modal-title">Allgemeine Geschäftsbedingungen</div>
+    <div class="modal-body">
+      <p>Die Nutzung von AI George erfolgt auf eigene Verantwortung. Die generierten Inhalte sind KI-basiert und stellen keine professionelle Rechts-, Finanz- oder medizinische Beratung dar.</p>
+      <br>
+      <p>AI George behält sich das Recht vor, den Dienst jederzeit zu ändern oder einzustellen. Die Inhalte dienen ausschließlich zur Information und Unterhaltung.</p>
+      <br>
+      <p>Alle Rechte an den AI George Inhalten liegen bei Swiss Halley AG / Fireflies Travel Community.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-datenschutz" onclick="if(event.target===this)closeModal('datenschutz')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('datenschutz')">✕</button>
+    <div class="modal-title">Datenschutz</div>
+    <div class="modal-body">
+      <p>AI George speichert keine persönlichen Daten dauerhaft. Gesprächsverläufe werden nur für die Dauer der Sitzung im Browser-Speicher gehalten.</p>
+      <br>
+      <p>Für die KI-Antworten wird die Anthropic API genutzt. Es gelten die Datenschutzbestimmungen von Anthropic (anthropic.com/privacy).</p>
+      <br>
+      <p>Diese Website verwendet keine Tracking-Cookies oder Analysetools.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-impressum" onclick="if(event.target===this)closeModal('impressum')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('impressum')">✕</button>
+    <div class="modal-title">Impressum</div>
+    <div class="modal-body">
+      <p><strong>AI George</strong></p>
+      <br>
+      <p>Betreiber: Swiss Halley AG / Fireflies Travel Community<br>
+      Weil am Rhein, Deutschland</p>
+      <br>
+      <p>E-Mail: aigeorge.ch@gmail.com</p>
+      <br>
+      <p>Haftungshinweis: Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Die Inhalte werden teilweise durch KI generiert.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
+</script>
+
 </body>
 </html>
