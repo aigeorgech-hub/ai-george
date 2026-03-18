@@ -329,6 +329,13 @@ function addMsg(role, text) {
   var bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
   bubble.innerHTML = text.split('\n').join('<br>');
+  if (isG) {
+    var ttsBtn = document.createElement('button');
+    ttsBtn.style.cssText = 'display:flex;align-items:center;gap:5px;margin-top:8px;padding:4px 10px;font-family:Jost,sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;';
+    ttsBtn.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+    ttsBtn.onclick = function() { readAloud(ttsBtn, text); };
+    bubble.appendChild(ttsBtn);
+  }
   div.appendChild(av);
   div.appendChild(bubble);
   inner.appendChild(div);
@@ -386,22 +393,28 @@ async function sendMessage() {
 
 document.getElementById('userInput').focus();
 
-function readAloud(btn, text) {
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
-    return;
+function readAloud(btn, text, e) {
+  if(e)e.stopPropagation();
+  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='de-DE';u.rate=0.88;u.pitch=0.85;
+  function setVoice(){
+    const voices=window.speechSynthesis.getVoices();
+    // Priority: Google Deutsch male, then any de male, then any de
+    const male = voices.find(v=>v.lang==='de-DE'&&/stefan|hans|markus|georg|daniel|helmut|male|männlich/i.test(v.name))
+      || voices.find(v=>v.lang==='de-DE'&&!/female|weiblich|anna|petra|sabine|marlene|karen|lisa/i.test(v.name))
+      || voices.find(v=>v.lang.startsWith('de'));
+    if(male){u.voice=male;}
+    u.onstart=()=>{btn.innerHTML=stopIcon;};
+    u.onend=()=>{btn.innerHTML=playIcon;};
+    u.onerror=()=>{btn.innerHTML=playIcon;};
+    window.speechSynthesis.speak(u);
   }
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'de-DE';
-  utter.rate = 0.92;
-  const voices = window.speechSynthesis.getVoices();
-  const de = voices.find(v => v.lang.startsWith('de') && v.name.toLowerCase().includes('male'))
-          || voices.find(v => v.lang.startsWith('de'));
-  if (de) utter.voice = de;
-  utter.onstart = () => { btn.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/></svg> Stop'; };
-  utter.onend = () => { btn.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen'; };
-  window.speechSynthesis.speak(utter);
+  const voices=window.speechSynthesis.getVoices();
+  if(voices.length===0){window.speechSynthesis.onvoiceschanged=setVoice;}
+  else{setVoice();}
 }
 </script>
 <footer class="site-footer">
