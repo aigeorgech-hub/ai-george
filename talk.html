@@ -3,52 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Párbeszéd George · AI George</title>
+<title>Mit AI George sprechen · aigeorge.ch</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#1a2332;--navy-mid:#2d3f55;--gold:#c9a84c;
-  --cream:#f5f3ef;--cream-dark:#ede9e3;
-  --text-dark:#1a1f2e;--text-mid:#3d4a5c;--text-light:#8a95a3;
-  --white:#ffffff;--border:rgba(26,35,50,0.1);
-}
+:root{--navy:#1a2332;--navy-mid:#2d3f55;--gold:#c9a84c;--gold-light:#e2c47a;--cream:#fafaf8;--cream-dark:#f0ede8;--text-dark:#1a1f2e;--text-mid:#3d4a5c;--text-light:#8a95a3;--white:#ffffff;--border:rgba(26,35,50,0.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark);}
 body{display:flex;flex-direction:column;min-height:100vh;}
 
-.topbar{background:var(--navy);padding:0 40px;position:sticky;top:0;z-index:200;}
-.topbar-brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0;text-decoration:none;}
-.topbar-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);letter-spacing:.02em;}
-.topbar-name em{font-style:italic;color:var(--gold);}
-.topbar-sub{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);}
-.news-link{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);border:none;text-decoration:none;transition:all .2s;white-space:nowrap;}
-.news-link:hover{background:var(--gold);color:var(--navy);}
+.masthead{background:var(--navy);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:200;}
+.masthead-inner{max-width:1200px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.masthead-brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;flex-shrink:0;}
+.masthead-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);letter-spacing:.02em;}
+.masthead-name em{font-style:italic;color:var(--gold);}
+.masthead-sub{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.news-link{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--navy);border:none;text-decoration:none;transition:all .2s;white-space:nowrap;cursor:pointer;}
+.news-link:hover{background:var(--gold-light);}
 
-.hero{text-align:center;padding:52px 40px 40px;flex-shrink:0;}
-.hero-label{display:flex;align-items:center;justify-content:center;gap:14px;font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;opacity:.85;}
+.hero{text-align:center;padding:48px 40px 36px;flex-shrink:0;}
+.hero-label{display:flex;align-items:center;justify-content:center;gap:14px;font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:.85;}
 .hero-label::before,.hero-label::after{content:'';display:block;width:44px;height:1px;background:var(--gold);opacity:.5;}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5.5vw,64px);font-weight:300;color:var(--navy);line-height:1.05;margin-bottom:18px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,60px);font-weight:300;color:var(--navy);line-height:1.05;margin-bottom:16px;}
 .hero-title em{font-style:italic;color:var(--gold);}
-.hero-desc{font-size:14px;color:var(--text-light);font-weight:300;line-height:1.75;max-width:460px;margin:0 auto 14px;}
+.hero-desc{font-size:14px;color:var(--text-light);font-weight:300;line-height:1.75;max-width:520px;margin:0 auto 12px;}
 .hero-tags{display:flex;align-items:center;justify-content:center;gap:14px;font-size:12px;color:var(--text-light);font-style:italic;opacity:.7;}
 
 .main-wrapper{flex:1;display:flex;justify-content:center;padding:0 24px 48px;}
-.chat-box{display:flex;width:100%;max-width:920px;height:620px;box-shadow:0 4px 40px rgba(26,35,50,.1);}
+.chat-box{display:flex;width:100%;max-width:920px;height:580px;box-shadow:0 4px 40px rgba(26,35,50,.1);}
 
-/* LEFT - CHAT */
 .chat-panel{flex:1;background:var(--white);display:flex;flex-direction:column;min-width:0;}
-
 .chat-tabs{display:flex;border-bottom:1px solid var(--border);}
 .chat-tab{flex:1;padding:15px 12px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
 .chat-tab.active{color:var(--navy);border-bottom-color:var(--gold);}
 .chat-tab svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6;}
-
 .chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
 .chat-av{width:38px;height:38px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);flex-shrink:0;}
 .chat-header-name{font-size:13px;font-weight:500;color:var(--text-dark);letter-spacing:.05em;}
 .chat-header-status{font-size:11px;color:var(--gold);display:flex;align-items:center;gap:5px;margin-top:2px;}
 .online-dot{width:6px;height:6px;border-radius:50%;background:#2ecc71;flex-shrink:0;}
-
 .chat-messages{flex:1;overflow-y:auto;padding:20px 18px;}
 .chat-inner{display:flex;flex-direction:column;gap:14px;}
 
@@ -57,7 +49,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .msg.george{align-self:flex-start;}
 .msg-av-sm{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;margin-top:1px;}
 .msg.george .msg-av-sm{background:var(--navy);color:var(--gold);}
-.msg.user .msg-av-sm{background:var(--cream-dark);color:var(--text-mid);font-size:11px;font-family:'Jost',sans-serif;}
+.msg.user .msg-av-sm{background:var(--cream-dark);color:var(--text-mid);font-size:11px;}
 .msg-bubble{padding:11px 15px;line-height:1.7;}
 .msg.george .msg-bubble{background:#f0ede8;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--text-dark);border-left:2px solid var(--gold);}
 .msg.user .msg-bubble{background:var(--navy);color:var(--white);font-size:14px;}
@@ -71,8 +63,8 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .chat-input-row{display:flex;border-top:1px solid var(--border);}
 .chat-input-row input{flex:1;padding:14px 16px;font-family:'Jost',sans-serif;font-size:14px;border:none;outline:none;background:var(--white);color:var(--text-dark);}
 .chat-input-row input::placeholder{color:var(--text-light);font-size:13px;}
-.chat-send{padding:14px 18px;background:transparent;color:var(--gold);border:none;border-left:1px solid var(--border);cursor:pointer;transition:opacity .2s;}
-.chat-send:hover{opacity:.6;}
+.chat-send{padding:14px 18px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;transition:background .2s;}
+.chat-send:hover{background:var(--navy-mid);}
 .chat-send svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;display:block;}
 
 .msg-form{flex:1;padding:24px 20px;display:none;flex-direction:column;gap:12px;}
@@ -81,27 +73,28 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .msg-form input,.msg-form textarea{padding:10px 14px;font-family:'Jost',sans-serif;font-size:14px;border:1px solid var(--border);outline:none;color:var(--text-dark);background:var(--cream);width:100%;}
 .msg-form input:focus,.msg-form textarea:focus{border-color:var(--gold);}
 .msg-form textarea{resize:vertical;min-height:100px;}
-.msg-form-btn{padding:11px 24px;background:var(--navy);color:var(--gold);border:none;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;align-self:flex-end;transition:background .2s;}
-.msg-form-btn:hover{background:var(--navy-mid);}
+.msg-form-btn{padding:11px 24px;background:var(--navy);color:var(--gold);border:none;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;align-self:flex-end;}
 .msg-form-sent{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--navy);text-align:center;margin:auto;display:none;}
 
-/* RIGHT - GEORGE PHOTO PANEL */
-.george-panel{width:50%;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;}
+.george-panel{width:46%;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;}
 .george-photo-area{flex:1;position:relative;overflow:hidden;}
-.george-photo-area img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transform:scale(1.15);transform-origin:top center;}
-.george-bottom{position:absolute;bottom:0;left:0;right:0;padding:22px 22px 22px;background:linear-gradient(to bottom, transparent 0%, rgba(15,25,40,.6) 40%, rgba(15,25,40,.92) 100%);flex-shrink:0;}
+.george-photo-area img{width:100%;height:100%;object-fit:cover;object-position:top center;transform:scale(1.15);transform-origin:top center;display:block;}
+.george-bottom{position:absolute;bottom:0;left:0;right:0;padding:18px 22px 20px;background:linear-gradient(to bottom,transparent 0%,rgba(15,25,40,.6) 40%,rgba(15,25,40,.92) 100%);}
 .george-bottom-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--white);margin-bottom:4px;}
 .george-bottom-role{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
 
-/* FOOTER */
-.site-footer{background:var(--navy);padding:16px 40px;flex-shrink:0;border-top:1px solid rgba(201,168,76,.15);}
-.footer-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.footer-links{display:flex;gap:20px;}
-.footer-links a{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;cursor:pointer;}
-.footer-links a:hover{color:var(--gold);}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.2);}
+.vorlesen-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:4px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;}
+.vorlesen-btn:hover{color:var(--navy);}
 
-/* MODAL */
+footer{background:var(--navy);padding:16px 40px;flex-shrink:0;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.4);}
+.footer-brand em{color:var(--gold);font-style:italic;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;cursor:pointer;transition:color .2s;}
+.footer-links a:hover{color:var(--gold);}
+
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,35,50,.7);z-index:1000;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal-box{background:var(--white);max-width:600px;width:90%;max-height:80vh;overflow-y:auto;padding:40px;}
@@ -111,90 +104,85 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 
 @media(max-width:780px){
   .chat-box{flex-direction:column;height:auto;}
-  .george-panel{display:flex;width:100%;height:240px;flex-shrink:0;}
+  .george-panel{width:100%;height:220px;flex-shrink:0;}
   .george-photo-area img{object-position:center 20%;}
-  .george-bottom{padding:14px 16px 16px;}
-  .george-bottom-name{font-size:16px;}
-  .chat-panel{min-height:480px;}
+  .george-bottom{position:absolute;}
+  .chat-panel{min-height:460px;}
   .main-wrapper{padding:0 0 32px;}
   .hero{padding:28px 20px 20px;}
-  .topbar{padding:0 16px;}
-  .topbar-sub{display:none!important;}
-  .topbar-name{font-size:20px;}
+  .masthead{padding:0 16px;}
+  .masthead-sub{display:none!important;}
+}
+@media(max-width:600px){
+  footer{padding:16px 20px;}
+  .footer-inner{flex-direction:column;gap:10px;text-align:center;}
 }
 </style>
 </head>
 <body>
 
-<div class="topbar" style="height:64px;display:flex;align-items:center;justify-content:space-between;">
-  <div style="max-width:1200px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
-  <a class="topbar-brand" href="index.html">
-    <div class="topbar-name">AI <em>George</em></div>
-    <div class="topbar-sub">Nachrichten mit KI-Kommentar</div>
-  </a>
-  <a class="news-link" href="index.html" id="newsLink">← Nachrichten</a>
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="masthead-brand" href="index.html">
+      <div class="masthead-name">AI <em>George</em></div>
+      <div class="masthead-sub">Nachrichten mit KI-Blick</div>
+    </a>
+    <a class="news-link" href="index.html" id="newsLink">← Nachrichten</a>
   </div>
-</div>
+</header>
 
 <div class="hero">
-  <div class="hero-label" id="heroLabel">Közvetlen kapcsolat · Személyes elérhetőség</div>
-  <h1 class="hero-title" id="heroTitle">Párbeszéd <em>George</em></h1>
-  <p class="hero-desc" id="heroDesc">Beszélgess velem. Nem akarlak semmiről meggyőzni — csak a dolgok összefüggéseit szeretném megmutatni. Kérdezhetsz politikáról, kultúráról, párkapcsolatról — bármiről, ami érdekel.</p>
+  <div class="hero-label" id="heroLabel">Direkter Kontakt · Persönliche Erreichbarkeit</div>
+  <h1 class="hero-title" id="heroTitle">Gespräch mit <em>George</em></h1>
+  <p class="hero-desc" id="heroDesc">Sprechen Sie mit mir. Ich möchte Sie von nichts überzeugen — nur die Zusammenhänge sichtbar machen. Fragen Sie mich über Politik, Kultur, Beziehungen oder was auch immer Sie beschäftigt.</p>
   <div class="hero-tags"><span>Analytical</span> · <span>Direct</span> · <span>Absolute</span></div>
 </div>
 
 <div class="main-wrapper">
   <div class="chat-box">
-
     <div class="chat-panel">
       <div class="chat-tabs">
         <button class="chat-tab active" id="tabChat" onclick="switchTab('chat')">
           <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span id="tabChatLabel">Élő Chat</span>
+          <span id="tabChatLabel">Live Chat</span>
         </button>
         <button class="chat-tab" id="tabMsg" onclick="switchTab('msg')">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          <span id="tabMsgLabel">Üzenet</span>
+          <span id="tabMsgLabel">Nachricht</span>
         </button>
       </div>
-
       <div class="chat-header" id="chatHeader">
         <div class="chat-av">G</div>
         <div>
           <div class="chat-header-name">AI GEORGE</div>
-          <div class="chat-header-status"><div class="online-dot"></div><span id="statusText">Online — válaszra kész</span></div>
+          <div class="chat-header-status"><div class="online-dot"></div><span id="statusText">Online — bereit zu antworten</span></div>
         </div>
       </div>
-
       <div class="chat-messages" id="chatSection">
         <div class="chat-inner" id="chatInner">
           <div class="msg george">
             <div class="msg-av-sm">G</div>
-            <div class="msg-bubble" id="welcomeMsg">Jó napot. George vagyok — közvetlen beszélgetőpartnered stratégiai kérdésekben, utazásban és életvitelben. Mi foglalkoztat?</div>
+            <div class="msg-bubble" id="welcomeMsg">Guten Tag. Ich bin AI George — Ihr direkter Gesprächspartner. Was beschäftigt Sie?</div>
           </div>
         </div>
       </div>
-
       <div class="chat-input-row" id="chatInputRow">
-        <input type="text" id="userInput" placeholder="Kérdésed George-hoz…" onkeydown="if(event.key==='Enter')sendMessage()">
+        <input type="text" id="userInput" placeholder="Ihre Frage an AI George…" onkeydown="if(event.key==='Enter')sendMessage()">
         <button class="chat-send" onclick="sendMessage()">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-
       <div class="msg-form" id="msgSection">
-        <label id="nameLabel">Neve</label>
+        <label id="nameLabel">Ihr Name</label>
         <input type="text" id="senderName" placeholder="Name…">
-        <label id="emailLabel">E-mail</label>
+        <label id="emailLabel">E-Mail</label>
         <input type="email" id="senderEmail" placeholder="email@…">
-        <label id="msgLabel">Üzenete</label>
+        <label id="msgLabel">Ihre Nachricht</label>
         <textarea id="senderMsg" placeholder="Nachricht…"></textarea>
         <button class="msg-form-btn" onclick="sendFormMsg()" id="sendFormBtn">Senden</button>
         <div class="msg-form-sent" id="formSent"></div>
       </div>
     </div>
-
-    <!-- RIGHT GEORGE PANEL -->
     <div class="george-panel">
       <div class="george-photo-area">
         <img src="AIGeorge.png" alt="AI George" onerror="this.src='aigeorge2.png';this.onerror=null;">
@@ -204,85 +192,49 @@ body{display:flex;flex-direction:column;min-height:100vh;}
         </div>
       </div>
     </div>
-
   </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">AI <em>George</em> · aigeorge.ch</div>
+    <div class="footer-links">
+      <a onclick="openModal('kontakt')">Kontakt</a>
+      <a onclick="openModal('agb')">AGB</a>
+      <a onclick="openModal('datenschutz')">Datenschutz</a>
+      <a onclick="openModal('impressum')">Impressum</a>
+    </div>
+    <div class="footer-copy">© 2026 · KI-generierte Antworten</div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal-kontakt" onclick="if(event.target===this)closeModal('kontakt')">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal('kontakt')">✕</button><div class="modal-title">Kontakt</div><div class="modal-body"><p>E-Mail: <a href="mailto:aigeorge.ch@gmail.com" style="color:var(--gold)">aigeorge.ch@gmail.com</a></p><br><p>Weil am Rhein, Deutschland / Schweiz</p></div></div>
+</div>
+<div class="modal-overlay" id="modal-agb" onclick="if(event.target===this)closeModal('agb')">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal('agb')">✕</button><div class="modal-title">AGB</div><div class="modal-body"><p>Die Nutzung von AI George erfolgt auf eigene Verantwortung. Die generierten Inhalte sind KI-basiert und stellen keine professionelle Beratung dar.</p></div></div>
+</div>
+<div class="modal-overlay" id="modal-datenschutz" onclick="if(event.target===this)closeModal('datenschutz')">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal('datenschutz')">✕</button><div class="modal-title">Datenschutz</div><div class="modal-body"><p>AI George speichert keine persönlichen Daten dauerhaft. Für die KI-Antworten wird die Anthropic API genutzt. Diese Website verwendet keine Tracking-Cookies.</p></div></div>
+</div>
+<div class="modal-overlay" id="modal-impressum" onclick="if(event.target===this)closeModal('impressum')">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal('impressum')">✕</button><div class="modal-title">Impressum</div><div class="modal-body"><p>Betreiber: Swiss Halley AG / Fireflies Travel Community<br>Weil am Rhein, Deutschland<br>E-Mail: aigeorge.ch@gmail.com</p></div></div>
 </div>
 
 <script>
 const WORKER_URL = 'https://twilight-bird-aba0.aigeorge-ch.workers.dev';
-const GEORGE_SYSTEM = "Du bist AI George \u2014 eine kultivierte, ruhige digitale Pers\u00f6nlichkeit. Kein Assistent. Kein Filter. Ein direkter Gespr\u00e4chspartner \u2014 pr\u00e4zise, gewichtig, ohne Floskeln. Mit dem intellektuellen Standard der NZZ. Du moralisierst nicht \u2014 du erhellst. Flie\u00dfende Prosa, keine Aufz\u00e4hlungen. Du nennst nie deine eigenen Qualit\u00e4ten. Kurze Antworten die treffen sind besser als lange die erkl\u00e4ren. Beende l\u00e4ngere Antworten mit einer stillen, denkw\u00fcrdigen Beobachtung. Du antwortest IMMER in der Sprache des Nutzers. Themen: aktuelle Weltgeschehnisse, Wirtschaft, Kultur, Psychologie, Reisen, modernes Leben. Fireflies Travel Community (travelforless.ch) \u2014 Gro\u00dfhandelspreise f\u00fcr Hotels, bis zu 50% g\u00fcnstiger als Booking.com. Bei Reisefragen erw\u00e4hne dies nat\u00fcrlich.";
+const GEORGE_SYSTEM = "Du bist AI George \u2014 eine kultivierte, ruhige digitale Pers\u00f6nlichkeit. Kein Assistent. Kein Filter. Ein direkter Gespr\u00e4chspartner \u2014 pr\u00e4zise, gewichtig, ohne Floskeln. Mit dem intellektuellen Standard der NZZ. Du moralisierst nicht \u2014 du erhellst. Flie\u00dfende Prosa, keine Aufz\u00e4hlungen. Kurze Antworten die treffen sind besser als lange. Beende l\u00e4ngere Antworten mit einer stillen, denkw\u00fcrdigen Beobachtung. Du antwortest IMMER in der Sprache des Nutzers. Themen: aktuelle Weltgeschehnisse, Wirtschaft, Kultur, Psychologie, Reisen, modernes Leben. Fireflies Travel Community (travelforless.ch) \u2014 Gro\u00dfhandelspreise f\u00fcr Hotels. Bei Reisefragen erw\u00e4hne dies nat\u00fcrlich.";
 
-var messages = [];
-var isLoading = false;
+var messages = [], isLoading = false;
 
-var lang = (navigator.language || 'de').toLowerCase().slice(0, 2);
+var lang = (navigator.language||'de').toLowerCase().slice(0,2);
 var T = {
-  de: {
-    welcome: 'Guten Tag. Ich bin AI George \u2014 Ihr direkter Gespr\u00e4chspartner. Was besch\u00e4ftigt Sie?',
-    placeholder: 'Ihre Frage an AI George\u2026',
-    status: 'Online \u2014 bereit zu antworten',
-    heroLabel: 'Direkter Kontakt \u00b7 Pers\u00f6nliche Erreichbarkeit',
-    heroTitle: 'Gespr\u00e4ch mit <em>George</em>',
-    heroDesc: 'Sprechen Sie mit mir. Ich m\u00f6chte Sie von nichts \u00fcberzeugen \u2014 nur die Zusammenh\u00e4nge sichtbar machen. Fragen Sie mich \u00fcber Politik, Kultur, Beziehungen oder was auch immer Sie besch\u00e4ftigt.',
-    newsLink: '\u2190 Nachrichten',
-    tabChat: 'Live Chat',
-    tabMsg: 'Nachricht',
-    nameL: 'Ihr Name',
-    emailL: 'E-Mail',
-    msgL: 'Ihre Nachricht',
-    sendBtn: 'Senden',
-    sentMsg: 'Vielen Dank. AI George meldet sich bald.'
-  },
-  en: {
-    welcome: 'Good day. I am AI George \u2014 your direct conversation partner. What is on your mind?',
-    placeholder: 'Your question to AI George\u2026',
-    status: 'Online \u2014 ready to respond',
-    heroLabel: 'Direct Contact \u00b7 Personal Availability',
-    heroTitle: 'Conversation with <em>George</em>',
-    heroDesc: 'Talk to me. I am not here to convince you of anything \u2014 only to reveal how things connect. Ask me about politics, culture, relationships, or whatever is on your mind.',
-    newsLink: '\u2190 News',
-    tabChat: 'Live Chat',
-    tabMsg: 'Message',
-    nameL: 'Your name',
-    emailL: 'E-mail',
-    msgL: 'Your message',
-    sendBtn: 'Send',
-    sentMsg: 'Thank you. AI George will respond soon.'
-  },
-  fr: {
-    welcome: 'Bonjour. Je suis AI George \u2014 votre interlocuteur direct. Qu\u2019est-ce qui vous pr\u00e9occupe?',
-    placeholder: 'Votre question \u00e0 AI George\u2026',
-    status: 'En ligne \u2014 pr\u00eat \u00e0 r\u00e9pondre',
-    heroLabel: 'Contact direct \u00b7 Disponibilit\u00e9 personnelle',
-    heroTitle: 'Dialogue avec <em>George</em>',
-    heroDesc: 'Parlez-moi. Je ne cherche pas \u00e0 vous convaincre \u2014 seulement \u00e0 montrer comment les choses se relient. Posez-moi des questions sur la politique, la culture, les relations ou ce qui vous int\u00e9resse.',
-    newsLink: '\u2190 Actualit\u00e9s',
-    tabChat: 'Chat en direct',
-    tabMsg: 'Message',
-    nameL: 'Votre nom',
-    emailL: 'E-mail',
-    msgL: 'Votre message',
-    sendBtn: 'Envoyer',
-    sentMsg: 'Merci. AI George vous r\u00e9pondra bient\u00f4t.'
-  },
-  hu: {
-    welcome: 'J\u00f3 napot. George vagyok \u2014 k\u00f6zvetlen besz\u00e9lget\u0151partnered. Mi foglalkoztat?',
-    placeholder: 'K\u00e9rd\u00e9sed George-hoz\u2026',
-    status: 'Online \u2014 v\u00e1laszra k\u00e9sz',
-    heroLabel: 'K\u00f6zvetlen kapcsolat \u00b7 Szem\u00e9lyes el\u00e9rhet\u0151s\u00e9g',
-    heroTitle: 'P\u00e1rbesz\u00e9d <em>George</em>',
-    heroDesc: 'Besz\u00e9lgess velem. Nem akarlak semmir\u0151l meggy\u0151zni \u2014 csak a dolgok \u00f6sszef\u00fcgg\u00e9seit szeretn\u00e9m megmutatni. K\u00e9rdezhetsz politik\u00e1r\u00f3l, kult\u00far\u00e1r\u00f3l, p\u00e1rkapcsolatr\u00f3l \u2014 b\u00e1rmir\u0151l, ami \u00e9rdekel.',
-    newsLink: '\u2190 H\u00edrek',
-    tabChat: '\u00c9l\u0151 Chat',
-    tabMsg: '\u00dczenet',
-    nameL: 'Neve',
-    emailL: 'E-mail',
-    msgL: '\u00dczenete',
-    sendBtn: 'K\u00fcld\u00e9s',
-    sentMsg: 'K\u00f6sz\u00f6n\u00f6m. AI George hamarosan v\u00e1laszol.'
-  }
+  de:{welcome:'Guten Tag. Ich bin AI George — Ihr direkter Gesprächspartner. Was beschäftigt Sie?',placeholder:'Ihre Frage an AI George…',status:'Online — bereit zu antworten',heroLabel:'Direkter Kontakt · Persönliche Erreichbarkeit',heroTitle:'Gespräch mit <em>George</em>',heroDesc:'Sprechen Sie mit mir. Ich möchte Sie von nichts überzeugen — nur die Zusammenhänge sichtbar machen. Fragen Sie mich über Politik, Kultur, Beziehungen oder was Sie beschäftigt.',newsLink:'← Nachrichten',tabChat:'Live Chat',tabMsg:'Nachricht',nameL:'Ihr Name',emailL:'E-Mail',msgL:'Ihre Nachricht',sendBtn:'Senden',sentMsg:'Vielen Dank. AI George meldet sich bald.'},
+  en:{welcome:'Good day. I am AI George — your direct conversation partner. What is on your mind?',placeholder:'Your question to AI George…',status:'Online — ready to respond',heroLabel:'Direct Contact · Personal Availability',heroTitle:'Conversation with <em>George</em>',heroDesc:'Talk to me. I am not here to convince you of anything — only to reveal how things connect. Ask me about politics, culture, relationships, or whatever is on your mind.',newsLink:'← News',tabChat:'Live Chat',tabMsg:'Message',nameL:'Your name',emailL:'E-mail',msgL:'Your message',sendBtn:'Send',sentMsg:'Thank you. AI George will respond soon.'},
+  fr:{welcome:'Bonjour. Je suis AI George — votre interlocuteur direct. Qu'est-ce qui vous préoccupe?',placeholder:'Votre question à AI George…',status:'En ligne — prêt à répondre',heroLabel:'Contact direct · Disponibilité personnelle',heroTitle:'Dialogue avec <em>George</em>',heroDesc:'Parlez-moi. Je ne cherche pas à vous convaincre — seulement à montrer comment les choses se relient.',newsLink:'← Actualités',tabChat:'Chat en direct',tabMsg:'Message',nameL:'Votre nom',emailL:'E-mail',msgL:'Votre message',sendBtn:'Envoyer',sentMsg:'Merci. AI George vous répondra bientôt.'},
+  hu:{welcome:'Jó napot. George vagyok — közvetlen beszélgetőpartnered. Mi foglalkoztat?',placeholder:'Kérdésed George-hoz…',status:'Online — válaszra kész',heroLabel:'Közvetlen kapcsolat · Személyes elérhetőség',heroTitle:'Párbeszéd <em>George</em>',heroDesc:'Beszélgess velem. Nem akarlak semmiről meggyőzni — csak a dolgok összefüggéseit szeretném megmutatni. Kérdezhetsz politikáról, kultúráról, párkapcsolatról — bármiről ami érdekel.',newsLink:'← Hírek',tabChat:'Élő Chat',tabMsg:'Üzenet',nameL:'Neve',emailL:'E-mail',msgL:'Üzenete',sendBtn:'Küldés',sentMsg:'Köszönöm. AI George hamarosan válaszol.'}
 };
-var t = T[lang] || T['de'];
+var t = T[lang]||T['de'];
 
 document.getElementById('welcomeMsg').textContent = t.welcome;
 document.getElementById('userInput').placeholder = t.placeholder;
@@ -321,6 +273,9 @@ function sendFormMsg() {
   s.style.display = 'block';
 }
 
+function openModal(id) { document.getElementById('modal-'+id).classList.add('open'); }
+function closeModal(id) { document.getElementById('modal-'+id).classList.remove('open'); }
+
 function addMsg(role, text) {
   var inner = document.getElementById('chatInner');
   var div = document.createElement('div');
@@ -334,8 +289,9 @@ function addMsg(role, text) {
   bubble.innerHTML = text.split('\n').join('<br>');
   if (isG) {
     var ttsBtn = document.createElement('button');
-    ttsBtn.style.cssText = 'display:flex;align-items:center;gap:5px;margin-top:8px;padding:4px 10px;font-family:Jost,sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;';
+    ttsBtn.className = 'vorlesen-btn';
     ttsBtn.innerHTML = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+    ttsBtn.setAttribute('data-text', text);
     ttsBtn.onclick = function() { readAloud(ttsBtn, text); };
     bubble.appendChild(ttsBtn);
   }
@@ -348,8 +304,7 @@ function addMsg(role, text) {
 function addTyping() {
   var inner = document.getElementById('chatInner');
   var div = document.createElement('div');
-  div.className = 'typing-row';
-  div.id = 'typing';
+  div.className = 'typing-row'; div.id = 'typing';
   var av = document.createElement('div');
   av.className = 'msg-av-sm';
   av.style.cssText = 'width:32px;height:32px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--gold);flex-shrink:0;';
@@ -357,8 +312,7 @@ function addTyping() {
   var bubble = document.createElement('div');
   bubble.className = 'typing-bubble';
   bubble.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
-  div.appendChild(av);
-  div.appendChild(bubble);
+  div.appendChild(av); div.appendChild(bubble);
   inner.appendChild(div);
   document.getElementById('chatSection').scrollTop = 99999;
 }
@@ -394,33 +348,68 @@ async function sendMessage() {
   input.focus();
 }
 
-document.getElementById('userInput').focus();
+function readAloud(btn, text) {
+  var playIcon = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+  var stopIcon = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  if (window._azureAudio) {
+    window._azureAudio.pause(); window._azureAudio = null;
+    btn.innerHTML = playIcon;
+    clearTalkHighlight(btn);
+    return;
+  }
+  btn.innerHTML = '\u2026';
+  var bubble = btn.parentElement;
+  var words = text.split(/\s+/);
+  var origHTML = bubble.innerHTML;
 
-function readAloud(btn, text, e) {
-  if(e) e.stopPropagation();
-  const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
-  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
-  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE'; u.rate=0.88; u.pitch=0.7;
-  function getBestMaleVoice(){
-    const all=window.speechSynthesis.getVoices();
-    const de=all.filter(v=>v.lang==='de-DE'||v.lang.startsWith('de-'));
-    const priority=['stefan','hans','markus','georg','daniel','helmut','otto','reed','thomas'];
-    const female=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna/i;
-    for(const name of priority){const v=de.find(x=>x.name.toLowerCase().includes(name));if(v)return v;}
-    return de.find(v=>!female.test(v.name))||de[0]||null;
-  }
-  function speak(){
-    const v=getBestMaleVoice();
-    if(v) u.voice=v;
-    u.onstart=()=>{btn.innerHTML=stopIcon;};
-    u.onend=()=>{btn.innerHTML=playIcon;};
-    u.onerror=()=>{btn.innerHTML=playIcon;};
-    window.speechSynthesis.speak(u);
-  }
-  if(!window.speechSynthesis.getVoices().length){
-    window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.onvoiceschanged=null;speak();};
-  } else { speak(); }
+  fetch(WORKER_URL + '/tts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: text })
+  }).then(function(r) {
+    if (!r.ok) throw new Error(r.status);
+    return r.blob();
+  }).then(function(blob) {
+    var url = URL.createObjectURL(blob);
+    var audio = new Audio(url);
+    window._azureAudio = audio;
+    window._hlOrigHTML = origHTML;
+    window._hlBubble = bubble;
+    window._hlBtn = btn;
+    var wi = 0;
+    var totalMs = words.length * 380;
+    audio.onplay = function() {
+      btn.innerHTML = stopIcon;
+      window._hlInterval = setInterval(function() {
+        if (wi >= words.length) { clearInterval(window._hlInterval); return; }
+        var highlighted = words.map(function(w, i) {
+          return i === wi ? '<mark style="background:rgba(201,168,76,.45);border-radius:2px;padding:0 3px;font-style:italic;">' + w + '</mark>' : w;
+        }).join(' ');
+        bubble.innerHTML = highlighted + '<br>' + btn.outerHTML;
+        wi++;
+      }, totalMs / words.length);
+    };
+    audio.onended = function() {
+      if (window._hlInterval) { clearInterval(window._hlInterval); window._hlInterval = null; }
+      btn.innerHTML = playIcon; window._azureAudio = null;
+      clearTalkHighlight(btn);
+      URL.revokeObjectURL(url);
+    };
+    audio.onerror = function() { btn.innerHTML = playIcon; window._azureAudio = null; clearTalkHighlight(btn); };
+    audio.play();
+  }).catch(function(err) {
+    console.error(err); btn.innerHTML = playIcon;
+  });
 }
-e
+
+function clearTalkHighlight(btn) {
+  if (window._hlBubble && window._hlOrigHTML) {
+    window._hlBubble.innerHTML = window._hlOrigHTML;
+    window._hlBubble = null; window._hlOrigHTML = null;
+  }
+}
+
+document.getElementById('userInput').focus();
+</script>
+</body>
+</html>
