@@ -853,4 +853,37 @@ function readAloud(btn, text, e) {
 
 function startHighlight(){}
 function stopHighlight(){}
->
+
+updateAdminUI();
+currentFilter='all';
+renderAll();
+renderTrending();
+updateCount();
+</script>
+
+<!-- EDIT MODAL -->
+<div class="overlay" id="editOverlay" onclick="if(event.target===this)closeEdit()">
+  <div class="login-box" style="max-width:500px;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);font-weight:400;margin-bottom:20px;">Artikel bearbeiten</h2>
+    <input type="hidden" id="editId">
+    <input type="text" id="editTitle" placeholder="Titel" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
+    <input type="url" id="editUrl" placeholder="URL" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
+    <textarea id="editSummary" placeholder="Zusammenfassung" rows="3" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;resize:vertical;"></textarea>
+    <input type="url" id="editImg" placeholder="Bild-URL" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
+    <input type="text" id="editSource" placeholder="Quelle" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
+    <select id="editCat" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:var(--navy-mid);border:1px solid rgba(255,255,255,.25);color:var(--white);outline:none;margin-bottom:16px;">
+      <option value="tech" style="background:#2d3f55;color:#fff;">Tech &amp; AI</option>
+      <option value="business" style="background:#2d3f55;color:#fff;">Wirtschaft</option>
+      <option value="culture" style="background:#2d3f55;color:#fff;">Kultur</option>
+      <option value="travel" style="background:#2d3f55;color:#fff;">Reisen</option>
+      <option value="psychology" style="background:#2d3f55;color:#fff;">Psychologie</option>
+      <option value="politik" style="background:#2d3f55;color:#fff;">Politik</option>
+    </select>
+    <div style="display:flex;gap:10px;">
+      <button onclick="saveEdit()" class="login-submit" style="flex:1;">Speichern</button>
+      <button onclick="closeEdit()" class="login-cancel" style="margin:0;flex:0 0 auto;padding:11px 16px;border:1px solid rgba(255,255,255,.15);">Abbrechen</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
