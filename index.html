@@ -87,15 +87,18 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .abtn:hover{color:var(--navy);border-color:rgba(26,35,50,.4);}
 .abtn.wa:hover{color:#25D366;border-color:#25D366;}
 .abtn.fb:hover{color:#1877F2;border-color:#1877F2;}
-.abtn.xx:hover{color:#000;border-color:#000;}.abtn.li:hover{color:#0077b5;border-color:#0077b5;}.abtn.tg:hover{color:#0088cc;border-color:#0088cc;}.abtn.ms:hover{color:#0084ff;border-color:#0084ff;}.read-more-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--gold);text-decoration:none;margin-bottom:10px;transition:opacity .2s;}.read-more-link:hover{opacity:.7;}
-.abtn.cp:hover{color:var(--gold);border-color:var(--gold);}
-.abtn.del{color:rgba(192,57,43,.35);}
-.abtn.del:hover{color:var(--red);border-color:var(--red);}
-.george-comment{margin-top:12px;padding:14px 18px;background:var(--white);border-left:2px solid var(--gold);}
+.abtn.xx:hover{color:#000;border-color:#000;}
+.abtn.cp:hover{color:var(--gold);border-color:var(--gold);}.read-more-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--gold);text-decoration:none;margin-bottom:10px;transition:opacity .2s;}
+.read-more-link:hover{opacity:.7;}
 .gc-preview{overflow:hidden;max-height:4.8em;line-height:1.6;mask-image:linear-gradient(to bottom,black 60%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 60%,transparent 100%);}
 .gc-preview.expanded{max-height:none;mask-image:none;-webkit-mask-image:none;}
 .gc-read-more{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--gold);background:none;border:none;cursor:pointer;padding:4px 0;margin-top:4px;text-transform:uppercase;}
-.gc-read-more:hover{opacity:.7;}
+.abtn.li:hover{color:#0077b5;border-color:#0077b5;}
+.abtn.tg:hover{color:#0088cc;border-color:#0088cc;}
+.abtn.ms:hover{color:#0084ff;border-color:#0084ff;}
+.abtn.del{color:rgba(192,57,43,.35);}
+.abtn.del:hover{color:var(--red);border-color:var(--red);}
+.george-comment{margin-top:12px;padding:14px 18px;background:var(--white);border-left:2px solid var(--gold);}
 .gc-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .gc-av{width:20px;height:20px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:var(--gold);flex-shrink:0;}
 .gc-name{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-light);}
@@ -174,7 +177,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
     <button class="filter-btn active" onclick="filterNews('neueste')" data-cat="neueste">Neueste</button>
     <button class="filter-btn" onclick="filterNews('trending')" data-cat="trending">Meistgelesen</button>
     <button class="filter-btn" onclick="filterNews('all')" data-cat="all">Alle Themen</button>
-    <button class="filter-btn" onclick="filterNews('tech')" data-cat="tech">Tech & AI</button>
+    <button class="filter-btn" onclick="filterNews('tech')" data-cat="tech">Tech &amp; AI</button>
     <button class="filter-btn" onclick="filterNews('business')" data-cat="business">Wirtschaft</button>
     <button class="filter-btn" onclick="filterNews('culture')" data-cat="culture">Kultur</button>
     <button class="filter-btn" onclick="filterNews('travel')" data-cat="travel">Reisen</button>
@@ -299,7 +302,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 <script>
 const NETLIFY_URL='https://twilight-bird-aba0.aigeorge-ch.workers.dev';
 const ADMIN_PW='george2026';
-const STORAGE_KEY='aigeorge_v11';
+const STORAGE_KEY='aigeorge_v12';
 const SESSION_KEY='aigeorge_admin';
 const GEORGE_PROMPT=`Du bist AI George — eine kultivierte, ruhige digitale Persönlichkeit mit dem intellektuellen Standard der Neuen Zürcher Zeitung. Du kommentierst Nachrichtenartikel auf Deutsch in 3-5 Sätzen. Präzise, gewichtig, keine Floskeln. Du moralisierst nicht — du erhellst. Keine Aufzählungen — fließende Prosa. Beende mit einer stillen, denkwürdigen Beobachtung oder Frage.`;
 
@@ -356,7 +359,6 @@ function loadNews(){
 function saveNews(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(newsData));}catch(e){}}
 
 let newsData=loadNews();
-newsData.forEach(n=>{if(!n.ts&&n.time==='gerade eben')n.time='vor kurzem';});
 let currentFilter='all';
 const nums=newsData.map(n=>typeof n.id==='number'?n.id:0);let nextId=(nums.length?Math.max(...nums):0)+1;
 
@@ -416,7 +418,7 @@ function filterNews(cat){
 function renderTrendingPage(){
   document.getElementById('featuredSection').style.display='none';
   const items=newsData.filter(n=>n.id!=='featured').slice(0,10);
-  document.getElementById('newsList').innerHTML=items.map((n,i)=>`<div class="news-item"><div><div class="news-item-header"><span style="font-size:18px;font-weight:300;color:var(--text-light);font-family:'Cormorant Garamond',serif;">${String(i+1).padStart(2,'0')}</span><span class="cat-tag">${catLabel(n.cat)}</span><span class="news-source">${n.source}</span></div><a href="${n.url||'#'}" target="_blank" rel="noopener" class="news-title">${n.title}</a><p class="news-summary">${n.summary}</p>${commentBlock(n)}<div class="action-row">${actionsBlock(n)}</div></div>${n.img?`<a href="${n.url||'#'}" target="_blank"><img class="news-item-img" src="${n.img}" alt="" loading="lazy" onerror="this.style.display='none'" style="cursor:pointer;"></a>`:'<div class="news-img-ph"></div>'}</div>`).join('');
+  document.getElementById('newsList').innerHTML=items.map((n,i)=>`<div class="news-item"><div><div class="news-item-header"><span style="font-size:18px;font-weight:300;color:var(--text-light);font-family:'Cormorant Garamond',serif;">${String(i+1).padStart(2,'0')}</span><span class="cat-tag">${catLabel(n.cat)}</span><span class="news-source">${n.source}</span></div><a href="${n.url||'#'}" target="_blank" rel="noopener" class="news-title">${n.title}</a><p class="news-summary">${n.summary}</p><div class="action-row">${actionsBlock(n)}</div></div>${n.img?`<a href="${n.url||'#'}" target="_blank"><img class="news-item-img" src="${n.img}" alt="" loading="lazy" onerror="this.style.display='none'" style="cursor:pointer;"></a>`:'<div class="news-img-ph"></div>'}</div>`).join('');
 }
 
 function commentBlock(item){
@@ -425,38 +427,25 @@ function commentBlock(item){
     const id=item.id;
     const comments=item.readerComments||[];
     const delBtn=isAdmin?`<button onclick="deleteComment('${id}')" style="margin-left:auto;font-size:10px;color:rgba(192,57,43,.35);background:none;border:none;cursor:pointer;padding:2px 6px;" onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='rgba(192,57,43,.35)'">&#10005;</button>`:'';
-    const existingComments=comments.map(c=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-size:11px;color:var(--text-light);margin-bottom:3px;">${c.time}</div><div style="font-size:15px;color:var(--text-dark);line-height:1.6;">${c.text}</div></div>`).join('');
-    return`<div class="george-comment" data-id="${id}" style="display:none;">
+    const existing=comments.map(cm=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-size:11px;color:var(--text-light);margin-bottom:3px;">${cm.time}</div><div style="font-size:15px;color:var(--text-dark);line-height:1.6;">${cm.text}</div></div>`).join('');
+    return`<div class="george-comment" data-id="${id}" style="display:none;margin-top:12px;padding:14px 18px;background:var(--white);border-left:2px solid var(--gold);">
       <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George &middot; Kommentar</span>${delBtn}</div>
       <p class="gc-text gc-preview" id="gc-text-${id}">${item.comment}</p>
-      <button class="gc-read-more" id="gc-readmore-${id}" onclick="expandComment('${id}')">
-        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        Vollständigen Kommentar lesen
-      </button>
-      <button class="vorlesen-btn" data-text="${item.comment}" style="display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;" onclick="readAloud(this,this.dataset.text,event)" onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--text-light)'"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+        <button class="gc-read-more" id="gc-readmore-${id}" onclick="expandComment('${id}')">&#8964; Vollständigen Kommentar lesen</button>
+        <button class="vorlesen-btn" data-text="${item.comment}" onclick="readAloud(this,this.dataset.text,event)" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen</button>
+      </div>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);">
         <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--gold);margin-bottom:10px;">Ihre Meinung?</div>
-        <div id="rc-list-${id}">${existingComments}</div>
+        <div id="rc-list-${id}">${existing}</div>
         <div style="display:flex;gap:0;margin-top:10px;">
-          <input id="rc-input-${id}" class="rc-input" type="text" placeholder="Ihr Kommentar&hellip;" onkeydown="if(event.key==='Enter')submitReaderComment('${id}')"
-            style="flex:1;padding:9px 13px;font-family:'Jost',sans-serif;font-size:13px;border:1px solid var(--border);border-right:none;outline:none;background:var(--cream);color:var(--text-dark);">
-          <button onclick="submitReaderComment('${id}')"
-            style="padding:9px 16px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;">Senden</button>
+          <input id="rc-input-${id}" class="rc-input" type="text" placeholder="Ihr Kommentar&hellip;" onkeydown="if(event.key==='Enter')submitReaderComment('${id}')" style="flex:1;padding:9px 13px;font-family:'Jost',sans-serif;font-size:13px;border:1px solid var(--border);border-right:none;outline:none;background:var(--cream);color:var(--text-dark);">
+          <button onclick="submitReaderComment('${id}')" style="padding:9px 16px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;">Senden</button>
         </div>
       </div>
     </div>`;
   }
   return'';
-}
-function expandComment(id){
-  const para=document.getElementById('gc-text-'+id);
-  const btn=document.getElementById('gc-readmore-'+id);
-  if(!para)return;
-  para.classList.toggle('expanded');
-  const expanded=para.classList.contains('expanded');
-  btn.innerHTML=expanded
-    ?'<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg> Weniger anzeigen'
-    :'<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg> Vollständigen Kommentar lesen';
 }
 function actionsBlock(item){
   const id=item.id;
@@ -468,7 +457,7 @@ function actionsBlock(item){
   const commentBtn=!item.comment&&!item.loading
     ?`<button class="abtn" onclick="getComment('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Kommentieren${rcCount>0?' ('+rcCount+')':''}</button>`
     :`<button class="abtn" onclick="toggleGeorgeComment('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Kommentar lesen${rcCount>0?' ('+rcCount+')':''}</button>`;
-  const shareBtn=`<button class="abtn" onclick="toggleShareMenu('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Teilen</button><div id="share-${id}" style="display:none;flex-wrap:wrap;gap:6px;margin-top:6px;"><button class="abtn fb" onclick="share('fb','${u}','${t}')" title="Facebook"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button><button class="abtn wa" onclick="share('wa','${u}','${t}')" title="WhatsApp"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button><button class="abtn ms" onclick="share('ms','${u}','${t}')" title="Messenger"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.936 1.42 5.556 3.641 7.28V21l2.515-1.386C9.077 19.85 10.503 20 12 20c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.057 12.429l-2.571-2.857-4.9 2.857 5.457-5.714 2.571 2.857 4.9-2.857-5.457 5.714z"/></svg></button><button class="abtn xx" onclick="share('x','${u}','${t}')" title="X"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button><button class="abtn li" onclick="share('li','${u}','${t}')" title="LinkedIn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button><button class="abtn tg" onclick="share('tg','${u}','${t}')" title="Telegram"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.94c-.13.58-.47.72-.95.45l-2.6-1.92-1.26 1.2c-.14.14-.26.26-.53.26l.19-2.66 4.87-4.4c.21-.19-.05-.29-.32-.1L7.44 14.1l-2.55-.8c-.55-.17-.56-.55.12-.82l9.97-3.85c.46-.17.86.11.66.17z"/></svg></button><button class="abtn cp" onclick="share('copy','${u}','${t}')" title="Link"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></div>`;
+  const shareBtn=`<button class="abtn" onclick="toggleShareMenu('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Teilen</button><div id="share-${id}" style="display:none;flex-wrap:wrap;gap:6px;margin-top:6px;"><button class="abtn fb" onclick="share('fb','${u}','${t}')" title="Facebook"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button><button class="abtn wa" onclick="share('wa','${u}','${t}')" title="WhatsApp"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button><button class="abtn ms" onclick="share('ms','${u}','${t}')" title="Messenger"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.936 1.42 5.556 3.641 7.28V21l2.515-1.386C9.077 19.85 10.503 20 12 20c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.057 12.429l-2.571-2.857-4.9 2.857 5.457-5.714 2.571 2.857 4.9-2.857-5.457 5.714z"/></svg></button><button class="abtn xx" onclick="share('x','${u}','${t}')" title="X"><svg viewBox="0 0 24 24" width="15" height="15" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button><button class="abtn li" onclick="share('li','${u}','${t}')" title="LinkedIn"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button><button class="abtn tg" onclick="share('tg','${u}','${t}')" title="Telegram"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.94c-.13.58-.47.72-.95.45l-2.6-1.92-1.26 1.2c-.14.14-.26.26-.53.26l.19-2.66 4.87-4.4c.21-.19-.05-.29-.32-.1L7.44 14.1l-2.55-.8c-.55-.17-.56-.55.12-.82l9.97-3.85c.46-.17.86.11.66.17z"/></svg></button><button class="abtn cp" onclick="share('copy','${u}','${t}')" title="Link"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></div>`;
   return`${editBtn}${delBtn}${commentBtn}${shareBtn}`;
 }
 
@@ -523,12 +512,6 @@ function renderTrending(){
     </div>`).join('');
 }
 
-function toggleGeorgeComment(id){
-  const el=document.querySelector('.george-comment[data-id="'+id+'"]');
-  if(!el)return;
-  const hidden=el.style.display==='none'||el.style.display==='';
-  el.style.display=hidden?'block':'none';
-}
 function timeAgo(ts){if(!ts)return'';const d=Math.floor((Date.now()-ts)/1000);if(d<60)return'gerade eben';if(d<3600)return'vor '+Math.floor(d/60)+' Min.';if(d<86400)return'vor '+Math.floor(d/3600)+' Std.';return'vor '+Math.floor(d/86400)+' Tag'+(Math.floor(d/86400)>1?'en':'');}
 function renderAll(){renderFeatured();renderList();}
 
@@ -818,44 +801,17 @@ function closeEdit() {
   document.getElementById('editOverlay').classList.remove('open');
 }
 
-function toggleShareMenu(id){
-  const el=document.getElementById('share-'+id);
-  if(!el)return;
-  const open=el.style.display==='flex';
-  el.style.display=open?'none':'flex';
+function toggleShareMenu(id){const el=document.getElementById('share-'+id);if(!el)return;el.style.display=el.style.display==='flex'?'none':'flex';}
+function toggleGeorgeComment(id){const el=document.querySelector('.george-comment[data-id="'+id+'"]');if(!el)return;el.style.display=el.style.display==='none'||el.style.display===''?'block':'none';}
+function expandComment(id){const para=document.getElementById('gc-text-'+id);const btn=document.getElementById('gc-readmore-'+id);if(!para)return;para.classList.toggle('expanded');const exp=para.classList.contains('expanded');if(btn)btn.innerHTML=exp?'∧ Weniger':'∨ Vollständigen Kommentar lesen';}
+function readAloud(btn,text,e){if(e)e.stopPropagation();const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';if(window._azureAudio){window._azureAudio.pause();window._azureAudio=null;btn.innerHTML=playIcon;return;}btn.innerHTML='... ';fetch('https://twilight-bird-aba0.aigeorge-ch.workers.dev/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();}).then(blob=>{const url=URL.createObjectURL(blob);const audio=new Audio(url);window._azureAudio=audio;audio.onended=()=>{btn.innerHTML=playIcon;window._azureAudio=null;URL.revokeObjectURL(url);};audio.onerror=()=>{btn.innerHTML=playIcon;window._azureAudio=null;};audio.play();btn.innerHTML=stopIcon;}).catch(err=>{console.error(err);btn.innerHTML=playIcon;});}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
 }
-function readAloud(btn, text, e) {
-  if(e) e.stopPropagation();
-  const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
-  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
-  if(window._azureAudio){window._azureAudio.pause();window._azureAudio=null;btn.innerHTML=playIcon;return;}
-  btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> …';
-  fetch('https://twilight-bird-aba0.aigeorge-ch.workers.dev/tts', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({text: text})
-  }).then(r => {
-    if(!r.ok) throw new Error('TTS error '+r.status);
-    return r.blob();
-  }).then(blob => {
-    const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
-    window._azureAudio = audio;
-    audio.onended = ()=>{btn.innerHTML=playIcon;window._azureAudio=null;URL.revokeObjectURL(url);};
-    audio.onerror = ()=>{btn.innerHTML=playIcon;window._azureAudio=null;};
-    audio.play();
-    btn.innerHTML = stopIcon;
-  }).catch(err => {
-    console.error(err);
-    btn.innerHTML = playIcon;
-  });
-}
-
-function startHighlight(){}
-function stopHighlight(){}
 
 updateAdminUI();
-currentFilter='all';
 renderAll();
 renderTrending();
 updateCount();
@@ -872,12 +828,12 @@ updateCount();
     <input type="url" id="editImg" placeholder="Bild-URL" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
     <input type="text" id="editSource" placeholder="Quelle" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
     <select id="editCat" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:var(--navy-mid);border:1px solid rgba(255,255,255,.25);color:var(--white);outline:none;margin-bottom:16px;">
-      <option value="tech" style="background:#2d3f55;color:#fff;">Tech &amp; AI</option>
-      <option value="business" style="background:#2d3f55;color:#fff;">Wirtschaft</option>
-      <option value="culture" style="background:#2d3f55;color:#fff;">Kultur</option>
-      <option value="travel" style="background:#2d3f55;color:#fff;">Reisen</option>
-      <option value="psychology" style="background:#2d3f55;color:#fff;">Psychologie</option>
-      <option value="politik" style="background:#2d3f55;color:#fff;">Politik</option>
+      <option value="tech" style="background:#2d3f55;">Tech &amp; AI</option>
+      <option value="business">Wirtschaft</option>
+      <option value="culture">Kultur</option>
+      <option value="travel">Reisen</option>
+      <option value="psychology">Psychologie</option>
+      <option value="politik">Politik</option>
     </select>
     <div style="display:flex;gap:10px;">
       <button onclick="saveEdit()" class="login-submit" style="flex:1;">Speichern</button>
