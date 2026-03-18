@@ -804,7 +804,66 @@ function closeEdit() {
 function toggleShareMenu(id){const el=document.getElementById('share-'+id);if(!el)return;el.style.display=el.style.display==='flex'?'none':'flex';}
 function toggleGeorgeComment(id){const el=document.querySelector('.george-comment[data-id="'+id+'"]');if(!el)return;el.style.display=el.style.display==='none'||el.style.display===''?'block':'none';}
 function expandComment(id){const para=document.getElementById('gc-text-'+id);const btn=document.getElementById('gc-readmore-'+id);if(!para)return;para.classList.toggle('expanded');const exp=para.classList.contains('expanded');if(btn)btn.innerHTML=exp?'∧ Weniger':'∨ Vollständigen Kommentar lesen';}
-function readAloud(btn,text,e){if(e)e.stopPropagation();const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';if(window._azureAudio){window._azureAudio.pause();window._azureAudio=null;btn.innerHTML=playIcon;return;}btn.innerHTML='... ';fetch('https://twilight-bird-aba0.aigeorge-ch.workers.dev/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();}).then(blob=>{const url=URL.createObjectURL(blob);const audio=new Audio(url);window._azureAudio=audio;audio.onended=()=>{btn.innerHTML=playIcon;window._azureAudio=null;URL.revokeObjectURL(url);};audio.onerror=()=>{btn.innerHTML=playIcon;window._azureAudio=null;};audio.play();btn.innerHTML=stopIcon;}).catch(err=>{console.error(err);btn.innerHTML=playIcon;});}
+function readAloud(btn,text,e){
+  if(e)e.stopPropagation();
+  const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  if(window._azureAudio){window._azureAudio.pause();window._azureAudio=null;btn.innerHTML=playIcon;clearHighlight(btn);return;}
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> …';
+
+  // Find the george-comment container and expand it fully
+  const gc = btn.closest('.george-comment');
+  if(gc) {
+    gc.style.display = 'block';
+    const id = gc.dataset.id;
+    const para = document.getElementById('gc-text-'+id);
+    if(para) {
+      para.classList.add('expanded');
+      const readMoreBtn = document.getElementById('gc-readmore-'+id);
+      if(readMoreBtn) readMoreBtn.innerHTML = '∧ Weniger';
+    }
+  }
+
+  fetch('https://twilight-bird-aba0.aigeorge-ch.workers.dev/tts',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({text:text})
+  }).then(r=>{
+    if(!r.ok)throw new Error(r.status);
+    return r.blob();
+  }).then(blob=>{
+    const url=URL.createObjectURL(blob);
+    const audio=new Audio(url);
+    window._azureAudio=audio;
+    window._azureBtn=btn;
+
+    // Word highlight via timeupdate
+    const words=text.split(/\s+/);
+    const totalDuration=words.length * 0.38; // estimate ~380ms per word
+    const para = gc ? gc.querySelector('.gc-text') : null;
+    if(para) {
+      para.dataset.orig = para.innerHTML;
+      audio.addEventListener('timeupdate', ()=>{
+        const progress = audio.currentTime / (audio.duration||totalDuration);
+        const wi = Math.min(Math.floor(progress * words.length), words.length-1);
+        para.innerHTML = words.map((w,i)=>
+          i===wi ? `<mark style="background:rgba(201,168,76,.4);border-radius:2px;padding:0 2px;font-style:italic;">${w}</mark>` : w
+        ).join(' ');
+      });
+    }
+
+    audio.onended=()=>{btn.innerHTML=playIcon;window._azureAudio=null;URL.revokeObjectURL(url);clearHighlight(btn);};
+    audio.onerror=()=>{btn.innerHTML=playIcon;window._azureAudio=null;clearHighlight(btn);};
+    audio.play();
+    btn.innerHTML=stopIcon;
+  }).catch(err=>{console.error(err);btn.innerHTML=playIcon;});
+}
+function clearHighlight(btn){
+  const gc=btn?btn.closest('.george-comment'):null;
+  if(!gc)return;
+  const para=gc.querySelector('.gc-text');
+  if(para&&para.dataset.orig){para.innerHTML=para.dataset.orig;delete para.dataset.orig;}
+}
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
