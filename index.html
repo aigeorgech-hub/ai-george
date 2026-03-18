@@ -808,61 +808,70 @@ function readAloud(btn,text,e){
   if(e)e.stopPropagation();
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
   const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
-  if(window._azureAudio){window._azureAudio.pause();window._azureAudio=null;btn.innerHTML=playIcon;clearHighlight(btn);return;}
+  if(window._azureAudio){
+    window._azureAudio.pause();window._azureAudio=null;
+    if(window._hlInterval){clearInterval(window._hlInterval);window._hlInterval=null;}
+    btn.innerHTML=playIcon;clearHighlight();return;
+  }
   btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> …';
 
-  // Find the george-comment container and expand it fully
-  const gc = btn.closest('.george-comment');
-  if(gc) {
-    gc.style.display = 'block';
-    const id = gc.dataset.id;
-    const para = document.getElementById('gc-text-'+id);
-    if(para) {
-      para.classList.add('expanded');
-      const readMoreBtn = document.getElementById('gc-readmore-'+id);
-      if(readMoreBtn) readMoreBtn.innerHTML = '∧ Weniger';
+  // Find comment ID from vorlesen-btn's parent george-comment
+  const gc=btn.parentElement;
+  let commentId=null;
+  let node=btn;
+  while(node&&!commentId){if(node.dataset&&node.dataset.id)commentId=node.dataset.id;node=node.parentElement;}
+
+  // Open and expand comment
+  if(commentId){
+    const gcEl=document.querySelector('.george-comment[data-id="'+commentId+'"]');
+    if(gcEl){
+      gcEl.style.display='block';
+      const para=document.getElementById('gc-text-'+commentId);
+      if(para){para.classList.add('expanded');window._hlPara=para;window._hlOrig=para.textContent;}
+      const rmBtn=document.getElementById('gc-readmore-'+commentId);
+      if(rmBtn)rmBtn.innerHTML='∧ Weniger';
     }
   }
 
   fetch('https://twilight-bird-aba0.aigeorge-ch.workers.dev/tts',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+    method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({text:text})
-  }).then(r=>{
-    if(!r.ok)throw new Error(r.status);
-    return r.blob();
-  }).then(blob=>{
+  }).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();})
+  .then(blob=>{
     const url=URL.createObjectURL(blob);
     const audio=new Audio(url);
     window._azureAudio=audio;
-    window._azureBtn=btn;
 
-    // Word highlight via timeupdate
+    // Word highlighting with interval timer
     const words=text.split(/\s+/);
-    const totalDuration=words.length * 0.38; // estimate ~380ms per word
-    const para = gc ? gc.querySelector('.gc-text') : null;
-    if(para) {
-      para.dataset.orig = para.innerHTML;
-      audio.addEventListener('timeupdate', ()=>{
-        const progress = audio.currentTime / (audio.duration||totalDuration);
-        const wi = Math.min(Math.floor(progress * words.length), words.length-1);
-        para.innerHTML = words.map((w,i)=>
-          i===wi ? `<mark style="background:rgba(201,168,76,.4);border-radius:2px;padding:0 2px;font-style:italic;">${w}</mark>` : w
+    const msPerWord=Math.max(280, (words.join(' ').length * 60));  // rough estimate
+    const totalMs=words.length*380;
+    let wi=0;
+    const startHL=()=>{
+      window._hlInterval=setInterval(()=>{
+        if(!window._hlPara||wi>=words.length){clearInterval(window._hlInterval);return;}
+        window._hlPara.innerHTML=words.map((w,i)=>
+          i===wi?`<mark style="background:rgba(201,168,76,.45);border-radius:2px;padding:0 3px;font-style:italic;">${w}</mark>`:w
         ).join(' ');
-      });
-    }
+        wi++;
+      }, totalMs/words.length);
+    };
 
-    audio.onended=()=>{btn.innerHTML=playIcon;window._azureAudio=null;URL.revokeObjectURL(url);clearHighlight(btn);};
-    audio.onerror=()=>{btn.innerHTML=playIcon;window._azureAudio=null;clearHighlight(btn);};
+    audio.onplay=()=>{startHL();btn.innerHTML=stopIcon;};
+    audio.onended=()=>{
+      btn.innerHTML=playIcon;window._azureAudio=null;
+      if(window._hlInterval){clearInterval(window._hlInterval);window._hlInterval=null;}
+      clearHighlight();URL.revokeObjectURL(url);
+    };
+    audio.onerror=()=>{btn.innerHTML=playIcon;window._azureAudio=null;clearHighlight();};
     audio.play();
-    btn.innerHTML=stopIcon;
   }).catch(err=>{console.error(err);btn.innerHTML=playIcon;});
 }
-function clearHighlight(btn){
-  const gc=btn?btn.closest('.george-comment'):null;
-  if(!gc)return;
-  const para=gc.querySelector('.gc-text');
-  if(para&&para.dataset.orig){para.innerHTML=para.dataset.orig;delete para.dataset.orig;}
+function clearHighlight(){
+  if(window._hlPara&&window._hlOrig){
+    window._hlPara.textContent=window._hlOrig;
+    window._hlPara=null;window._hlOrig=null;
+  }
 }
 function showToast(msg){
   const t=document.getElementById('toast');
