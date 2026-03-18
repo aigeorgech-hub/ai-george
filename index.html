@@ -351,6 +351,7 @@ function loadNews(){
 function saveNews(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(newsData));}catch(e){}}
 
 let newsData=loadNews();
+newsData.forEach(n=>{if(!n.ts&&n.time==='gerade eben')n.time='vor kurzem';});
 let currentFilter='all';
 const nums=newsData.map(n=>typeof n.id==='number'?n.id:0);let nextId=(nums.length?Math.max(...nums):0)+1;
 
@@ -808,6 +809,18 @@ function closeEdit() {
   document.getElementById('editOverlay').classList.remove('open');
 }
 
+function readAloud(btn, text, e) {
+  if(e)e.stopPropagation();
+  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';return;}
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='de-DE';u.rate=0.92;
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.lang.startsWith('de')&&v.name.toLowerCase().includes('male'))||voices.find(v=>v.lang.startsWith('de'));
+  if(v)u.voice=v;
+  u.onstart=()=>{btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';};
+  u.onend=()=>{btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';};
+  window.speechSynthesis.speak(u);
+}
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
