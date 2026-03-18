@@ -33,7 +33,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .hero-tags{display:flex;align-items:center;justify-content:center;gap:14px;font-size:12px;color:var(--text-light);font-style:italic;opacity:.7;}
 
 .main-wrapper{flex:1;display:flex;justify-content:center;padding:0 24px 48px;}
-.chat-box{display:flex;width:100%;max-width:920px;height:560px;box-shadow:0 4px 40px rgba(26,35,50,.1);}
+.chat-box{display:flex;width:100%;max-width:920px;height:620px;box-shadow:0 4px 40px rgba(26,35,50,.1);}
 
 /* LEFT - CHAT */
 .chat-panel{flex:1;background:var(--white);display:flex;flex-direction:column;min-width:0;}
@@ -88,7 +88,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 /* RIGHT - GEORGE PHOTO PANEL */
 .george-panel{width:50%;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;}
 .george-photo-area{flex:1;position:relative;overflow:hidden;}
-.george-photo-area img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.george-photo-area img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transform:scale(1.15);transform-origin:top center;}
 .george-bottom{position:absolute;bottom:0;left:0;right:0;padding:22px 22px 22px;background:linear-gradient(to bottom, transparent 0%, rgba(15,25,40,.6) 40%, rgba(15,25,40,.92) 100%);flex-shrink:0;}
 .george-bottom-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--white);margin-bottom:4px;}
 .george-bottom-role{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
@@ -110,9 +110,14 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);margin-top:-8px;}
 
 @media(max-width:780px){
-  .george-panel{display:none;}
-  .main-wrapper{padding:0 12px 32px;}
-  .hero{padding:36px 20px 24px;}
+  .chat-box{flex-direction:column;height:auto;}
+  .george-panel{display:flex;width:100%;height:240px;flex-shrink:0;}
+  .george-photo-area img{object-position:center 20%;}
+  .george-bottom{padding:14px 16px 16px;}
+  .george-bottom-name{font-size:16px;}
+  .chat-panel{min-height:480px;}
+  .main-wrapper{padding:0 0 32px;}
+  .hero{padding:28px 20px 20px;}
   .topbar{padding:0 16px;}
 }
 </style>
@@ -130,7 +135,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 <div class="hero">
   <div class="hero-label" id="heroLabel">Közvetlen kapcsolat · Személyes elérhetőség</div>
   <h1 class="hero-title" id="heroTitle">Párbeszéd <em>George</em></h1>
-  <p class="hero-desc" id="heroDesc">Nincs asszisztens. Nincs szűrő. Stratégiai kérdés vagy személyes kihívás – fordulj hozzám közvetlenül.</p>
+  <p class="hero-desc" id="heroDesc">Beszélgess velem. Nem akarlak semmiről meggyőzni — csak a dolgok összefüggéseit szeretném megmutatni. Kérdezhetsz politikáról, kultúráról, párkapcsolatról — bármiről, ami érdekel.</p>
   <div class="hero-tags"><span>Analytical</span> · <span>Direct</span> · <span>Absolute</span></div>
 </div>
 
@@ -214,7 +219,7 @@ var T = {
     status: 'Online \u2014 bereit zu antworten',
     heroLabel: 'Direkter Kontakt \u00b7 Pers\u00f6nliche Erreichbarkeit',
     heroTitle: 'Gespr\u00e4ch mit <em>George</em>',
-    heroDesc: 'Kein Assistent. Kein Filter. Eine direkte Konversation \u2014 pr\u00e4zise, gewichtig, auf den Punkt.',
+    heroDesc: 'Sprechen Sie mit mir. Ich m\u00f6chte Sie von nichts \u00fcberzeugen \u2014 nur die Zusammenh\u00e4nge sichtbar machen. Fragen Sie mich \u00fcber Politik, Kultur, Beziehungen oder was auch immer Sie besch\u00e4ftigt.',
     newsLink: '\u2190 Nachrichten',
     tabChat: 'Live Chat',
     tabMsg: 'Nachricht',
@@ -230,7 +235,7 @@ var T = {
     status: 'Online \u2014 ready to respond',
     heroLabel: 'Direct Contact \u00b7 Personal Availability',
     heroTitle: 'Conversation with <em>George</em>',
-    heroDesc: 'No assistant. No filter. A direct conversation \u2014 precise, weighty, to the point.',
+    heroDesc: 'Talk to me. I am not here to convince you of anything \u2014 only to reveal how things connect. Ask me about politics, culture, relationships, or whatever is on your mind.',
     newsLink: '\u2190 News',
     tabChat: 'Live Chat',
     tabMsg: 'Message',
@@ -246,7 +251,7 @@ var T = {
     status: 'En ligne \u2014 pr\u00eat \u00e0 r\u00e9pondre',
     heroLabel: 'Contact direct \u00b7 Disponibilit\u00e9 personnelle',
     heroTitle: 'Dialogue avec <em>George</em>',
-    heroDesc: 'Pas d\u2019assistant. Pas de filtre. Une conversation directe \u2014 pr\u00e9cise, substantielle.',
+    heroDesc: 'Parlez-moi. Je ne cherche pas \u00e0 vous convaincre \u2014 seulement \u00e0 montrer comment les choses se relient. Posez-moi des questions sur la politique, la culture, les relations ou ce qui vous int\u00e9resse.',
     newsLink: '\u2190 Actualit\u00e9s',
     tabChat: 'Chat en direct',
     tabMsg: 'Message',
@@ -262,7 +267,7 @@ var T = {
     status: 'Online \u2014 v\u00e1laszra k\u00e9sz',
     heroLabel: 'K\u00f6zvetlen kapcsolat \u00b7 Szem\u00e9lyes el\u00e9rhet\u0151s\u00e9g',
     heroTitle: 'P\u00e1rbesz\u00e9d <em>George</em>',
-    heroDesc: 'Nincs asszisztens. Nincs sz\u0171r\u0151. Strat\u00e9giai k\u00e9rd\u00e9s vagy szem\u00e9lyes kih\u00edv\u00e1s \u2013 fordulj hozz\u00e1m k\u00f6zvetlen\u00fcl.',
+    heroDesc: 'Besz\u00e9lgess velem. Nem akarlak semmir\u0151l meggy\u0151zni \u2014 csak a dolgok \u00f6sszef\u00fcgg\u00e9seit szeretn\u00e9m megmutatni. K\u00e9rdezhetsz politik\u00e1r\u00f3l, kult\u00far\u00e1r\u00f3l, p\u00e1rkapcsolatr\u00f3l \u2014 b\u00e1rmir\u0151l, ami \u00e9rdekel.',
     newsLink: '\u2190 H\u00edrek',
     tabChat: '\u00c9l\u0151 Chat',
     tabMsg: '\u00dczenet',
