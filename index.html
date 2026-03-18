@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -828,86 +829,29 @@ function readAloud(btn, text, e) {
   if(e) e.stopPropagation();
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
   const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
-  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;stopHighlight(btn);return;}
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE'; u.rate=0.88; u.pitch=0.7;
-  function getBestMaleVoice(){
-    const all=window.speechSynthesis.getVoices();
-    const de=all.filter(v=>v.lang==='de-DE'||v.lang==='de_DE'||v.lang.startsWith('de-'));
-    const priority=['stefan','hans','markus','georg','daniel','helmut','otto','reed','thomas','microsoft stefan','google deutsch'];
-    const female=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna|helga|frieda/i;
-    for(const name of priority){const v=de.find(x=>x.name.toLowerCase().includes(name));if(v)return v;}
-    return de.find(v=>!female.test(v.name)) || de[0] || null;
-  }
-  function speak(){
-    const v=getBestMaleVoice();
-    if(v){u.voice=v;}
-    u.onstart=()=>{btn.innerHTML=stopIcon; startHighlight(btn,text,u);};
-    u.onend=()=>{btn.innerHTML=playIcon; stopHighlight(btn);};
-    u.onerror=()=>{btn.innerHTML=playIcon; stopHighlight(btn);};
-    window.speechSynthesis.speak(u);
-  }
-  if(!window.speechSynthesis.getVoices().length){
-    window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.onvoiceschanged=null;speak();};
-  } else { speak(); }
-}
-function startHighlight(btn, text, u){
-  const gc=btn.closest('.george-comment');
-  if(!gc) return;
-  const para=gc.querySelector('.gc-text');
-  if(!para) return;
-  para.dataset.orig=para.innerHTML;
-  const words=text.split(/\s+/);
-  let wi=0;
-  u.onboundary=function(ev){
-    if(ev.name!=='word') return;
-    para.innerHTML=words.map((w,i)=>i===wi?'<mark style="background:rgba(201,168,76,.4);border-radius:2px;padding:0 1px;">'+w+'</mark>':w).join(' ');
-    wi++;
-  };
-}
-function stopHighlight(btn){
-  const gc=btn.closest('.george-comment');
-  if(!gc) return;
-  const para=gc.querySelector('.gc-text');
-  if(para&&para.dataset.orig){para.innerHTML=para.dataset.orig;delete para.dataset.orig;}
+  if(window._azureAudio){window._azureAudio.pause();window._azureAudio=null;btn.innerHTML=playIcon;return;}
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> …';
+  fetch('https://twilight-bird-aba0.aigeorge-ch.workers.dev/tts', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text: text})
+  }).then(r => {
+    if(!r.ok) throw new Error('TTS error '+r.status);
+    return r.blob();
+  }).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    window._azureAudio = audio;
+    audio.onended = ()=>{btn.innerHTML=playIcon;window._azureAudio=null;URL.revokeObjectURL(url);};
+    audio.onerror = ()=>{btn.innerHTML=playIcon;window._azureAudio=null;};
+    audio.play();
+    btn.innerHTML = stopIcon;
+  }).catch(err => {
+    console.error(err);
+    btn.innerHTML = playIcon;
+  });
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2400);
-}
-
-updateAdminUI();
-currentFilter='all';
-renderAll();
-renderTrending();
-updateCount();
-</script>
-
-<!-- EDIT MODAL -->
-<div class="overlay" id="editOverlay" onclick="if(event.target===this)closeEdit()">
-  <div class="login-box" style="max-width:500px;">
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);font-weight:400;margin-bottom:20px;">Artikel bearbeiten</h2>
-    <input type="hidden" id="editId">
-    <input type="text" id="editTitle" placeholder="Titel" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
-    <input type="url" id="editUrl" placeholder="URL" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
-    <textarea id="editSummary" placeholder="Zusammenfassung" rows="3" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;resize:vertical;"></textarea>
-    <input type="url" id="editImg" placeholder="Bild-URL" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
-    <input type="text" id="editSource" placeholder="Quelle" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
-    <select id="editCat" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:var(--navy-mid);border:1px solid rgba(255,255,255,.25);color:var(--white);outline:none;margin-bottom:16px;">
-      <option value="tech" style="background:#2d3f55;color:#fff;">Tech & AI</option>
-      <option value="business" style="background:#2d3f55;color:#fff;">Wirtschaft</option>
-      <option value="culture" style="background:#2d3f55;color:#fff;">Kultur</option>
-      <option value="travel" style="background:#2d3f55;color:#fff;">Reisen</option>
-      <option value="psychology" style="background:#2d3f55;color:#fff;">Psychologie</option>
-      <option value="politik" style="background:#2d3f55;color:#fff;">Politik</option>
-    </select>
-    <div style="display:flex;gap:10px;">
-      <button onclick="saveEdit()" class="login-submit" style="flex:1;">Speichern</button>
-      <button onclick="closeEdit()" class="login-cancel" style="margin:0;flex:0 0 auto;padding:11px 16px;border:1px solid rgba(255,255,255,.15);">Abbrechen</button>
-    </div>
-  </div>
-</div>
-</body>
-</html>
+function startHighlight(){}
+function stopHighlight(){}
+>
