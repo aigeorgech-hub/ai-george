@@ -67,7 +67,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .featured-img{width:100%;height:300px;object-fit:cover;display:block;margin-bottom:20px;background:var(--cream-dark);}
 .featured-title-link{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,38px);font-weight:400;line-height:1.2;color:var(--navy);margin-bottom:14px;text-decoration:none;display:block;transition:color .2s;}
 .featured-title-link:hover{color:var(--gold);}
-.featured-summary{font-size:17px;line-height:1.9;color:var(--text-mid);font-weight:300;max-width:640px;margin-bottom:16px;}
+.featured-summary{font-size:20px;line-height:1.9;color:var(--text-mid);font-weight:300;max-width:640px;margin-bottom:16px;}
 .source-badge{padding:3px 10px;background:var(--navy);color:var(--white);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;}
 .news-list{display:flex;flex-direction:column;}
 .news-item{padding:24px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 140px;gap:20px;align-items:start;}
@@ -82,12 +82,12 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .news-title:hover{color:var(--gold);}
 .news-summary{font-size:15px;line-height:1.8;color:var(--text-mid);font-weight:300;margin-bottom:10px;}
 .action-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;}
-.abtn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;color:var(--text-light);}
+.abtn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid rgba(26,35,50,.25);cursor:pointer;transition:all .2s;text-decoration:none;color:#4a5568;}
 .abtn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;flex-shrink:0;}
 .abtn:hover{color:var(--navy);border-color:rgba(26,35,50,.4);}
 .abtn.wa:hover{color:#25D366;border-color:#25D366;}
 .abtn.fb:hover{color:#1877F2;border-color:#1877F2;}
-.abtn.xx:hover{color:#000;border-color:#000;}
+.abtn.xx:hover{color:#000;border-color:#000;}.abtn.li:hover{color:#0077b5;border-color:#0077b5;}.abtn.tg:hover{color:#0088cc;border-color:#0088cc;}.abtn.ms:hover{color:#0084ff;border-color:#0084ff;}.read-more-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--gold);text-decoration:none;margin-bottom:10px;transition:opacity .2s;}.read-more-link:hover{opacity:.7;}
 .abtn.cp:hover{color:var(--gold);border-color:var(--gold);}
 .abtn.del{color:rgba(192,57,43,.35);}
 .abtn.del:hover{color:var(--red);border-color:var(--red);}
@@ -95,7 +95,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .gc-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .gc-av{width:20px;height:20px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:var(--gold);flex-shrink:0;}
 .gc-name{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-light);}
-.gc-text{font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;color:var(--text-dark);font-style:italic;}
+.gc-text{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.7;color:var(--text-dark);font-style:italic;}
 .tdots{display:flex;align-items:center;gap:5px;padding:12px 18px;border-left:2px solid var(--gold);background:var(--white);margin-top:12px;}
 .td{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:tp 1.4s infinite;}
 .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
@@ -137,7 +137,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--gold);padding:10px 22px;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:all .3s;pointer-events:none;z-index:999;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 @media(max-width:900px){.main{grid-template-columns:1fr;gap:40px;padding:28px 20px;}.masthead,.filter-nav,.ticker-bar,footer{padding-left:20px;padding-right:20px;}.admin-inner{padding:20px;}.admin-form{grid-template-columns:1fr;}.sidebar{order:-1;}.gp{display:none;}.masthead-date{display:none;}}
-@media(max-width:600px){.news-item{grid-template-columns:1fr;}.news-item-img,.news-img-ph{width:100%;height:180px;order:-1;}}
+@media(max-width:600px){.news-item{grid-template-columns:1fr;}.news-item-img,.news-img-ph{width:100%;height:180px;order:-1;}.masthead-sub{display:none!important;}.masthead-name::after{content:" Nachrichten";}}
 </style>
 </head>
 <body>
@@ -146,13 +146,13 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
   <div class="masthead-inner">
     <div class="masthead-brand">
       <div class="masthead-name">AI <em>George</em></div>
-      <div class="masthead-sub">Nachrichten mit KI-Kommentar</div>
+      <div class="masthead-sub">Nachrichten mit KI-Blick</div>
     </div>
     <div class="masthead-nav">
       <span class="masthead-date" id="mastheadDate"></span>
       <a class="chat-cta" href="talk.html">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Mit AI George sprechen
+        Sprich mit George!
       </a>
       <button class="admin-toggle" id="adminToggle" onclick="toggleAdmin()" style="display:none;">+ Artikel</button>
       <button class="admin-toggle" id="loginBtn" onclick="openLogin()" title="Administration" style="border:none;padding:6px 10px;font-size:16px;letter-spacing:0;opacity:.3;">⚙</button>
@@ -162,7 +162,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 </header>
 
 <div class="ticker-bar">
-  <div class="ticker-inner">AI George Nachrichten &nbsp;·&nbsp; Tech · Wirtschaft · Kultur · Reisen · Psychologie &nbsp;·&nbsp; Switzerland's First AI News Curator &nbsp;·&nbsp; Weniger Lärm. Mehr Tiefe. &nbsp;·&nbsp;&nbsp; AI George Nachrichten &nbsp;·&nbsp; Tech · Wirtschaft · Kultur · Reisen · Psychologie &nbsp;·&nbsp; Switzerland's First AI News Curator &nbsp;·&nbsp; Weniger Lärm. Mehr Tiefe.</div>
+  <div class="ticker-inner">Nachrichten mit KI-Blick &nbsp;·&nbsp; Tech · Wirtschaft · Kultur · Reisen · Psychologie · Politik &nbsp;·&nbsp; Switzerland's First AI Curator &amp; Commentator &nbsp;·&nbsp; Weniger Lärm. Mehr Tiefe. &nbsp;·&nbsp;&nbsp; Nachrichten mit KI-Blick &nbsp;·&nbsp; Tech · Wirtschaft · Kultur · Reisen · Psychologie · Politik &nbsp;·&nbsp; Switzerland's First AI Curator &amp; Commentator &nbsp;·&nbsp; Weniger Lärm. Mehr Tiefe.</div>
 </div>
 
 <nav class="filter-nav">
@@ -174,6 +174,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
     <button class="filter-btn" onclick="filterNews('travel')" data-cat="travel">Reisen</button>
     <button class="filter-btn" onclick="filterNews('psychology')" data-cat="psychology">Psychologie</button>
     <button class="filter-btn" onclick="filterNews('politik')" data-cat="politik">Politik</button>
+    <button class="filter-btn" onclick="filterNews('trending')" data-cat="trending">Meistgelesen</button>
   </div>
 </nav>
 
@@ -257,7 +258,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
       <div class="sb-title">George sagt heute</div>
       <div class="gq"><p class="gq-text" id="dailyQuote"></p><div class="gq-attr">— AI George</div></div>
     </div>
-    <div class="sidebar-section">
+    <div class="sidebar-section" style="display:none;">
       <div class="sb-title">Meistgelesen</div>
       <div id="trendingList"></div>
     </div>
@@ -394,6 +395,9 @@ function share(type,url,title){
   }else if(type==='wa'){window.open('https://wa.me/?text='+e(title+' — '+u),'_blank');}
   else if(type==='fb'){window.open('https://www.facebook.com/sharer/sharer.php?u='+e(u),'_blank');}
   else if(type==='x'){window.open('https://twitter.com/intent/tweet?text='+e(title)+'&url='+e(u),'_blank');}
+  else if(type==='li'){window.open('https://www.linkedin.com/sharing/share-offsite/?url='+e(u),'_blank');}
+  else if(type==='tg'){window.open('https://t.me/share/url?url='+e(u)+'&text='+e(title),'_blank');}
+  else if(type==='ms'){window.open('https://www.facebook.com/dialog/send?link='+e(u)+'&app_id=291494419107518&redirect_uri='+e(u),'_blank');}
 }
 
 function catLabel(c){return{tech:'Tech & AI',business:'Wirtschaft',culture:'Kultur',travel:'Reisen',psychology:'Psychologie',politik:'Politik'}[c]||c;}
@@ -401,39 +405,57 @@ function catLabel(c){return{tech:'Tech & AI',business:'Wirtschaft',culture:'Kult
 function filterNews(cat){
   currentFilter=cat;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
-  renderAll();
+  if(cat==='trending'){renderTrendingPage();}else{renderAll();}
+}
+function renderTrendingPage(){
+  document.getElementById('featuredSection').style.display='none';
+  const items=newsData.filter(n=>n.id!=='featured').slice(0,10);
+  document.getElementById('newsList').innerHTML=items.map((n,i)=>`<div class="news-item"><div><div class="news-item-header"><span style="font-size:18px;font-weight:300;color:var(--text-light);font-family:'Cormorant Garamond',serif;">${String(i+1).padStart(2,'0')}</span><span class="cat-tag">${catLabel(n.cat)}</span><span class="news-source">${n.source}</span></div><a href="${n.url||'#'}" target="_blank" rel="noopener" class="news-title">${n.title}</a><p class="news-summary">${n.summary}</p>${commentBlock(n)}<div class="action-row">${actionsBlock(n)}</div></div>${n.img?`<a href="${n.url||'#'}" target="_blank"><img class="news-item-img" src="${n.img}" alt="" loading="lazy" onerror="this.style.display='none'" style="cursor:pointer;"></a>`:'<div class="news-img-ph"></div>'}</div>`).join('');
 }
 
 function commentBlock(item){
   if(item.loading)return`<div class="tdots"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
   if(item.comment){
-    const rcCount = (item.readerComments||[]).length;
-    return`<div class="george-comment">
-      <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George · Kommentar</span></div>
+    const id=item.id;
+    const comments=item.readerComments||[];
+    const delBtn=isAdmin?`<button onclick="deleteComment('${id}')" style="margin-left:auto;font-size:10px;color:rgba(192,57,43,.35);background:none;border:none;cursor:pointer;padding:2px 6px;" onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='rgba(192,57,43,.35)'">&#10005;</button>`:'';
+    const existingComments=comments.map(c=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-size:11px;color:var(--text-light);margin-bottom:3px;">${c.time}</div><div style="font-size:15px;color:var(--text-dark);line-height:1.6;">${c.text}</div></div>`).join('');
+    return`<div class="george-comment" data-id="${id}">
+      <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George &middot; Kommentar</span>${delBtn}<button class="gc-toggle" onclick="toggleGeorgeComment('${id}')" style="margin-left:auto;font-size:16px;line-height:1;color:var(--text-light);background:none;border:none;cursor:pointer;padding:2px 4px;" title="Schließen">−</button></div>
+      <div class="gc-body">
       <p class="gc-text">${item.comment}</p>
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--gold);letter-spacing:.01em;">Ihre Meinung?</span>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <button onclick="toggleReaderComments('${item.id}')" style="font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;" onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--text-light)'">
-            Kommentieren ${rcCount>0?'('+rcCount+')':''}
-          </button>
-          ${isAdmin?`<button onclick="deleteComment('${item.id}')" style="font-family:'Jost',sans-serif;font-size:10px;color:rgba(192,57,43,.4);background:none;border:none;cursor:pointer;padding:4px;" onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='rgba(192,57,43,.4)'">Kommentar löschen</button>`:''}
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--gold);margin-bottom:10px;">Ihre Meinung?</div>
+        <div id="rc-list-${id}">${existingComments}</div>
+        <div style="display:flex;gap:0;margin-top:10px;">
+          <input id="rc-input-${id}" class="rc-input" type="text" placeholder="Ihr Kommentar&hellip;" onkeydown="if(event.key==='Enter')submitReaderComment('${id}')"
+            style="flex:1;padding:9px 13px;font-family:'Jost',sans-serif;font-size:13px;border:1px solid var(--border);border-right:none;outline:none;background:var(--cream);color:var(--text-dark);">
+          <button onclick="submitReaderComment('${id}')"
+            style="padding:9px 16px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;">Senden</button>
         </div>
       </div>
-    </div>
-    ${readerCommentsBlock(item)}`;
+      </div>
+    </div>`;
   }
   return'';
 }
-
 function actionsBlock(item){
   const id=item.id;
   const u=item.url||'';
-  const t=item.title.replace(/['"`\\]/g,'');
-  const commentBtn=(!item.comment&&!item.loading)?`<button class="abtn" onclick="getComment('${id}')"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Kommentieren</button>`:'';
-  const editBtn=isAdmin?`<button class="abtn" onclick="editArticle('${id}')" style="color:rgba(201,168,76,.5);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,168,76,.5)'">✎ Bearbeiten</button>`:'';
-  const delBtn=isAdmin?`<button class="abtn del" onclick="deleteArticle('${id}')">✕ Löschen</button>`:'';
-  return`${commentBtn}${editBtn}<button class="abtn cp" onclick="share('copy','${u}','${t}')"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link</button><button class="abtn wa" onclick="share('wa','${u}','${t}')"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>WhatsApp</button><button class="abtn fb" onclick="share('fb','${u}','${t}')"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button><button class="abtn xx" onclick="share('x','${u}','${t}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 4l16 16M20 4L4 20"/></svg>X</button>${delBtn}`;
+  const t=item.title.replace(/['"`;]/g,'');
+  const rcCount=(item.readerComments||[]).length;
+  const editBtn=isAdmin?`<button class="abtn" onclick="editArticle('${id}')" title="Bearbeiten" style="color:rgba(201,168,76,.5);">&#9998;</button>`:'';
+  const delBtn=isAdmin?`<button class="abtn del" onclick="deleteArticle('${id}')" title="Löschen">&#10005;</button>`:'';
+  const gBtn=!item.comment&&!item.loading?`<button class="abtn" onclick="getComment('${id}')" title="George kommentiert"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${rcCount>0?' ('+rcCount+')':''}</button>`:'';
+  return`${editBtn}${delBtn}${gBtn}
+  <button class="abtn fb" onclick="share('fb','${u}','${t}')" title="Facebook"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button>
+  <button class="abtn wa" onclick="share('wa','${u}','${t}')" title="WhatsApp"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+  <button class="abtn ms" onclick="share('ms','${u}','${t}')" title="Messenger"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.936 1.42 5.556 3.641 7.28V21l2.515-1.386C9.077 19.85 10.503 20 12 20c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.057 12.429l-2.571-2.857-4.9 2.857 5.457-5.714 2.571 2.857 4.9-2.857-5.457 5.714z"/></svg></button>
+  <button class="abtn xx" onclick="share('x','${u}','${t}')" title="X"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <button class="abtn li" onclick="share('li','${u}','${t}')" title="LinkedIn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+  <button class="abtn tg" onclick="share('tg','${u}','${t}')" title="Telegram"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.94c-.13.58-.47.72-.95.45l-2.6-1.92-1.26 1.2c-.14.14-.26.26-.53.26l.19-2.66 4.87-4.4c.21-.19-.05-.29-.32-.1L7.44 14.1l-2.55-.8c-.55-.17-.56-.55.12-.82l9.97-3.85c.46-.17.86.11.66.17z"/></svg></button>
+  <button class="abtn cp" onclick="share('copy','${u}','${t}')" title="Link kopieren"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+`;
 }
 
 function renderFeatured(){
@@ -448,7 +470,8 @@ function renderFeatured(){
   document.getElementById('featuredSummary').textContent=f.summary;
   document.getElementById('featuredSource').textContent=f.source;
   document.getElementById('featuredTime').textContent=f.time;
-  document.getElementById('featuredComment').innerHTML=commentBlock(f);
+  const rmLink=f.url?`<a href="${f.url}" target="_blank" rel="noopener" class="read-more-link" style="margin-bottom:16px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Vollständigen Artikel lesen</a>`:'';
+  document.getElementById('featuredComment').innerHTML=rmLink+commentBlock(f);
   document.getElementById('featuredActions').innerHTML=actionsBlock(f);
 }
 
@@ -462,10 +485,11 @@ function renderList(){
         <div class="news-item-header">
           <span class="cat-tag">${catLabel(n.cat)}</span>
           <span class="news-source">${n.source}</span>
-          <span class="news-time">${n.time}</span>
+          <span class="news-time">${n.ts?timeAgo(n.ts):n.time}</span>
         </div>
         <a href="${n.url||'#'}" target="_blank" rel="noopener" class="news-title">${n.title}</a>
         <p class="news-summary">${n.summary}</p>
+        ${n.url?`<a href="${n.url}" target="_blank" rel="noopener" class="read-more-link"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Vollständigen Artikel lesen</a>`:''}
         ${commentBlock(n)}
         <div class="action-row">${actionsBlock(n)}</div>
       </div>
@@ -485,6 +509,17 @@ function renderTrending(){
     </div>`).join('');
 }
 
+function toggleGeorgeComment(id){
+  const el=document.querySelector('.george-comment[data-id="'+id+'"]');
+  if(!el)return;
+  const body=el.querySelector('.gc-body');
+  const btn=el.querySelector('.gc-toggle');
+  if(!body)return;
+  const hidden=body.style.display==='none';
+  body.style.display=hidden?'':'none';
+  if(btn)btn.textContent=hidden?'−':'+';
+}
+function timeAgo(ts){if(!ts)return'';const d=Math.floor((Date.now()-ts)/1000);if(d<60)return'gerade eben';if(d<3600)return'vor '+Math.floor(d/60)+' Min.';if(d<86400)return'vor '+Math.floor(d/3600)+' Std.';return'vor '+Math.floor(d/86400)+' Tag'+(Math.floor(d/86400)>1?'en':'');}
 function renderAll(){renderFeatured();renderList();}
 
 async function getComment(id){
@@ -795,13 +830,13 @@ updateCount();
     <textarea id="editSummary" placeholder="Zusammenfassung" rows="3" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;resize:vertical;"></textarea>
     <input type="url" id="editImg" placeholder="Bild-URL" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
     <input type="text" id="editSource" placeholder="Quelle" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:10px;">
-    <select id="editCat" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);outline:none;margin-bottom:16px;">
-      <option value="tech">Tech & AI</option>
-      <option value="business">Wirtschaft</option>
-      <option value="culture">Kultur</option>
-      <option value="travel">Reisen</option>
-      <option value="psychology">Psychologie</option>
-      <option value="politik">Politik</option>
+    <select id="editCat" style="width:100%;padding:9px 12px;font-family:'Jost',sans-serif;font-size:13px;background:var(--navy-mid);border:1px solid rgba(255,255,255,.25);color:var(--white);outline:none;margin-bottom:16px;">
+      <option value="tech" style="background:#2d3f55;color:#fff;">Tech & AI</option>
+      <option value="business" style="background:#2d3f55;color:#fff;">Wirtschaft</option>
+      <option value="culture" style="background:#2d3f55;color:#fff;">Kultur</option>
+      <option value="travel" style="background:#2d3f55;color:#fff;">Reisen</option>
+      <option value="psychology" style="background:#2d3f55;color:#fff;">Psychologie</option>
+      <option value="politik" style="background:#2d3f55;color:#fff;">Politik</option>
     </select>
     <div style="display:flex;gap:10px;">
       <button onclick="saveEdit()" class="login-submit" style="flex:1;">Speichern</button>
