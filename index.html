@@ -425,6 +425,7 @@ function commentBlock(item){
       <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George &middot; Kommentar</span>${delBtn}<button class="gc-toggle" onclick="toggleGeorgeComment('${id}')" style="margin-left:auto;font-size:16px;line-height:1;color:var(--text-light);background:none;border:none;cursor:pointer;padding:2px 4px;" title="Schließen">−</button></div>
       <div class="gc-body">
       <p class="gc-text">${item.comment}</p>
+      <button onclick="readAloud(this,'${item.comment.replace(/'/g,String.fromCharCode(39))}',event)" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;margin-bottom:4px;padding:5px 12px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;" onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--text-light)'"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen</button>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);">
         <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--gold);margin-bottom:10px;">Ihre Meinung?</div>
         <div id="rc-list-${id}">${existingComments}</div>
@@ -811,15 +812,26 @@ function closeEdit() {
 
 function readAloud(btn, text, e) {
   if(e)e.stopPropagation();
-  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';return;}
+  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE';u.rate=0.92;
+  u.lang='de-DE';u.rate=0.88;u.pitch=0.85;
+  function setVoice(){
+    const voices=window.speechSynthesis.getVoices();
+    // Priority: Google Deutsch male, then any de male, then any de
+    const male = voices.find(v=>v.lang==='de-DE'&&/stefan|hans|markus|georg|daniel|helmut|male|männlich/i.test(v.name))
+      || voices.find(v=>v.lang==='de-DE'&&!/female|weiblich|anna|petra|sabine|marlene|karen|lisa/i.test(v.name))
+      || voices.find(v=>v.lang.startsWith('de'));
+    if(male){u.voice=male;}
+    u.onstart=()=>{btn.innerHTML=stopIcon;};
+    u.onend=()=>{btn.innerHTML=playIcon;};
+    u.onerror=()=>{btn.innerHTML=playIcon;};
+    window.speechSynthesis.speak(u);
+  }
   const voices=window.speechSynthesis.getVoices();
-  const v=voices.find(v=>v.lang.startsWith('de')&&v.name.toLowerCase().includes('male'))||voices.find(v=>v.lang.startsWith('de'));
-  if(v)u.voice=v;
-  u.onstart=()=>{btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';};
-  u.onend=()=>{btn.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';};
-  window.speechSynthesis.speak(u);
+  if(voices.length===0){window.speechSynthesis.onvoiceschanged=setVoice;}
+  else{setVoice();}
 }
 function showToast(msg){
   const t=document.getElementById('toast');
