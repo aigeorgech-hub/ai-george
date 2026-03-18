@@ -16,13 +16,13 @@
 html,body{height:100%;font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark);}
 body{display:flex;flex-direction:column;min-height:100vh;}
 
-.topbar{background:var(--navy);padding:0 40px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar{background:var(--navy);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-brand{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
-.topbar-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--white);}
+.topbar-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);letter-spacing:.02em;}
 .topbar-name em{font-style:italic;color:var(--gold);}
-.topbar-sub{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);}
-.news-link{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
-.news-link:hover{color:var(--gold);}
+.topbar-sub{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.news-link{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);border:none;text-decoration:none;transition:all .2s;white-space:nowrap;}
+.news-link:hover{background:var(--gold);color:var(--navy);}
 
 .hero{text-align:center;padding:52px 40px 40px;flex-shrink:0;}
 .hero-label{display:flex;align-items:center;justify-content:center;gap:14px;font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;opacity:.85;}
@@ -119,7 +119,8 @@ body{display:flex;flex-direction:column;min-height:100vh;}
   .main-wrapper{padding:0 0 32px;}
   .hero{padding:28px 20px 20px;}
   .topbar{padding:0 16px;}
-  .topbar-sub{display:none;}
+  .topbar-sub{display:none!important;}
+  .topbar-name{font-size:20px;}
 }
 </style>
 </head>
@@ -399,22 +400,36 @@ function readAloud(btn, text, e) {
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
   if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE';u.rate=0.88;u.pitch=0.85;
-  function setVoice(){
-    const voices=window.speechSynthesis.getVoices();
-    // Priority: Google Deutsch male, then any de male, then any de
-    const male = voices.find(v=>v.lang==='de-DE'&&/stefan|hans|markus|georg|daniel|helmut|male|männlich/i.test(v.name))
-      || voices.find(v=>v.lang==='de-DE'&&!/female|weiblich|anna|petra|sabine|marlene|karen|lisa/i.test(v.name))
-      || voices.find(v=>v.lang.startsWith('de'));
-    if(male){u.voice=male;}
-    u.onstart=()=>{btn.innerHTML=stopIcon;};
+  u.lang='de-DE'; u.rate=0.88; u.pitch=0.75;
+  function pickVoice(){
+    const all=window.speechSynthesis.getVoices();
+    const deVoices=all.filter(v=>v.lang==='de-DE'||v.lang.startsWith('de'));
+    const femaleNames=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna|female|weiblich/i;
+    const maleNames=/stefan|hans|markus|georg|daniel|helmut|otto|reed|male|männlich/i;
+    const maleVoice=deVoices.find(v=>maleNames.test(v.name))||deVoices.find(v=>!femaleNames.test(v.name));
+    if(maleVoice) u.voice=maleVoice;
+  }
+  function doSpeak(){
+    u.onstart=()=>{
+      btn.innerHTML=stopIcon;
+      const bubble=btn.closest('.msg-bubble');
+      if(bubble){
+        const words=text.split(/\s+/);
+        let wi=0;
+        u.onboundary=function(ev){
+          if(ev.name!=='word'||wi>=words.length) return;
+          bubble.innerHTML=words.map((w,i)=>i===wi?`<mark style="background:rgba(201,168,76,.35);border-radius:2px;padding:0 2px;">${w}</mark>`:w).join(' ')+'<br>'+btn.outerHTML;
+          wi++;
+        };
+      }
+    };
     u.onend=()=>{btn.innerHTML=playIcon;};
     u.onerror=()=>{btn.innerHTML=playIcon;};
     window.speechSynthesis.speak(u);
   }
   const voices=window.speechSynthesis.getVoices();
-  if(voices.length===0){window.speechSynthesis.onvoiceschanged=setVoice;}
-  else{setVoice();}
+  if(voices.length===0){window.speechSynthesis.onvoiceschanged=()=>{pickVoice();doSpeak();};}
+  else{pickVoice();doSpeak();}
 }
 </script>
 <footer class="site-footer">
