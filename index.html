@@ -406,7 +406,7 @@ function catLabel(c){return{tech:'Tech & AI',business:'Wirtschaft',culture:'Kult
 function filterNews(cat){
   currentFilter=cat;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
-  if(cat==='trending'){renderTrendingPage();}else if(cat==='neueste'){currentFilter='all';renderAll();}else{renderAll();}
+  if(cat==='trending'){renderTrendingPage();}else{if(cat==='neueste')currentFilter='all';renderAll();}
 }
 function renderTrendingPage(){
   document.getElementById('featuredSection').style.display='none';
@@ -811,66 +811,53 @@ function closeEdit() {
 }
 
 function readAloud(btn, text, e) {
-  if(e)e.stopPropagation();
-  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  if(e) e.stopPropagation();
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
-  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
+  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;stopHighlight(btn);return;}
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE'; u.rate=0.88; u.pitch=0.75;
-  function pickVoice(){
+  u.lang='de-DE'; u.rate=0.88; u.pitch=0.7;
+  function getBestMaleVoice(){
     const all=window.speechSynthesis.getVoices();
-    const deVoices=all.filter(v=>v.lang==='de-DE'||v.lang==='de_DE'||v.lang.startsWith('de'));
-    const femaleNames=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna|female|weiblich/i;
-    const maleNames=/stefan|hans|markus|georg|daniel|helmut|otto|bernd|male|männlich|reed|microsoft david/i;
-    const maleVoice = deVoices.find(v=>maleNames.test(v.name))
-      || deVoices.find(v=>!femaleNames.test(v.name));
-    if(maleVoice) u.voice=maleVoice;
+    const de=all.filter(v=>v.lang==='de-DE'||v.lang==='de_DE'||v.lang.startsWith('de-'));
+    const priority=['stefan','hans','markus','georg','daniel','helmut','otto','reed','thomas','microsoft stefan','google deutsch'];
+    const female=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna|helga|frieda/i;
+    for(const name of priority){const v=de.find(x=>x.name.toLowerCase().includes(name));if(v)return v;}
+    return de.find(v=>!female.test(v.name)) || de[0] || null;
   }
-  const voices=window.speechSynthesis.getVoices();
-  if(voices.length===0){
-    window.speechSynthesis.onvoiceschanged=()=>{pickVoice(); doSpeak();};
-  } else {
-    pickVoice(); doSpeak();
-  }
-  function doSpeak(){
-    u.onstart=()=>{
-      btn.innerHTML=stopIcon;
-      startHighlight(btn, text, u);
-    };
-    u.onend=()=>{
-      btn.innerHTML=playIcon;
-      stopHighlight(btn);
-    };
+  function speak(){
+    const v=getBestMaleVoice();
+    if(v){u.voice=v;}
+    u.onstart=()=>{btn.innerHTML=stopIcon; startHighlight(btn,text,u);};
+    u.onend=()=>{btn.innerHTML=playIcon; stopHighlight(btn);};
     u.onerror=()=>{btn.innerHTML=playIcon; stopHighlight(btn);};
     window.speechSynthesis.speak(u);
   }
+  if(!window.speechSynthesis.getVoices().length){
+    window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.onvoiceschanged=null;speak();};
+  } else { speak(); }
 }
 function startHighlight(btn, text, u){
-  // Find the gc-text paragraph sibling
-  const bubble = btn.closest('.george-comment, .msg-bubble');
-  if(!bubble) return;
-  const para = bubble.querySelector('.gc-text') || bubble.querySelector('p');
+  const gc=btn.closest('.george-comment');
+  if(!gc) return;
+  const para=gc.querySelector('.gc-text');
   if(!para) return;
-  const original = para.innerHTML;
-  para.dataset.original = original;
-  const words = text.split(/\s+/);
-  let wordIdx = 0;
-  u.onboundary = function(ev){
-    if(ev.name !== 'word') return;
-    if(wordIdx >= words.length) return;
-    const highlighted = words.map((w,i)=>
-      i===wordIdx ? `<mark style="background:rgba(201,168,76,.35);border-radius:2px;padding:0 2px;">${w}</mark>` : w
-    ).join(' ');
-    para.innerHTML = highlighted;
-    wordIdx++;
+  para.dataset.orig=para.innerHTML;
+  const words=text.split(/\s+/);
+  let wi=0;
+  u.onboundary=function(ev){
+    if(ev.name!=='word') return;
+    para.innerHTML=words.map((w,i)=>i===wi?'<mark style="background:rgba(201,168,76,.4);border-radius:2px;padding:0 1px;">'+w+'</mark>':w).join(' ');
+    wi++;
   };
 }
 function stopHighlight(btn){
-  const bubble = btn.closest('.george-comment, .msg-bubble');
-  if(!bubble) return;
-  const para = bubble.querySelector('.gc-text') || bubble.querySelector('p');
-  if(para && para.dataset.original) para.innerHTML = para.dataset.original;
+  const gc=btn.closest('.george-comment');
+  if(!gc) return;
+  const para=gc.querySelector('.gc-text');
+  if(para&&para.dataset.orig){para.innerHTML=para.dataset.orig;delete para.dataset.orig;}
 }
+
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
