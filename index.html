@@ -6,7 +6,7 @@
 <title>AI George · Nachrichten</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#1a2332;--navy-mid:#2d3f55;--gold:#c9a84c;--gold-light:#e2c47a;--cream:#f5f3ef;--cream-dark:#e8e4dd;--text-dark:#1a1f2e;--text-mid:#3d4a5c;--text-light:#7a8595;--white:#ffffff;--border:rgba(26,35,50,0.1);--red:#c0392b;--green:#27ae60;}
+:root{--navy:#1a2332;--navy-mid:#2d3f55;--gold:#c9a84c;--gold-light:#e2c47a;--cream:#fafaf8;--cream-dark:#f0ede8;--text-dark:#1a1f2e;--text-mid:#3d4a5c;--text-light:#7a8595;--white:#ffffff;--border:rgba(26,35,50,0.1);--red:#c0392b;--green:#27ae60;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark);min-height:100vh;font-size:17px;}
 .masthead{background:var(--navy);padding:0 40px;position:sticky;top:0;z-index:200;}
@@ -80,10 +80,10 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .news-time{font-size:11px;color:var(--text-light);margin-left:auto;}
 .news-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.3;color:var(--navy);margin-bottom:8px;text-decoration:none;display:block;transition:color .2s;}
 .news-title:hover{color:var(--gold);}
-.news-summary{font-size:15px;line-height:1.8;color:var(--text-mid);font-weight:300;margin-bottom:10px;}
+.news-summary{font-size:15px;line-height:1.55;color:var(--text-mid);font-weight:300;margin-bottom:10px;}
 .action-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;}
-.abtn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid rgba(26,35,50,.25);cursor:pointer;transition:all .2s;text-decoration:none;color:#4a5568;}
-.abtn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;flex-shrink:0;}
+.abtn{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid rgba(26,35,50,.3);cursor:pointer;transition:all .2s;text-decoration:none;color:#3d4a5c;}
+.abtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0;}
 .abtn:hover{color:var(--navy);border-color:rgba(26,35,50,.4);}
 .abtn.wa:hover{color:#25D366;border-color:#25D366;}
 .abtn.fb:hover{color:#1877F2;border-color:#1877F2;}
@@ -92,6 +92,10 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .abtn.del{color:rgba(192,57,43,.35);}
 .abtn.del:hover{color:var(--red);border-color:var(--red);}
 .george-comment{margin-top:12px;padding:14px 18px;background:var(--white);border-left:2px solid var(--gold);}
+.gc-preview{overflow:hidden;max-height:4.8em;line-height:1.6;mask-image:linear-gradient(to bottom,black 60%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 60%,transparent 100%);}
+.gc-preview.expanded{max-height:none;mask-image:none;-webkit-mask-image:none;}
+.gc-read-more{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--gold);background:none;border:none;cursor:pointer;padding:4px 0;margin-top:4px;text-transform:uppercase;}
+.gc-read-more:hover{opacity:.7;}
 .gc-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .gc-av{width:20px;height:20px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:var(--gold);flex-shrink:0;}
 .gc-name{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-light);}
@@ -167,14 +171,15 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 
 <nav class="filter-nav">
   <div class="filter-inner">
-    <button class="filter-btn active" onclick="filterNews('all')" data-cat="all">Alle Themen</button>
+    <button class="filter-btn active" onclick="filterNews('neueste')" data-cat="neueste">Neueste</button>
+    <button class="filter-btn" onclick="filterNews('trending')" data-cat="trending">Meistgelesen</button>
+    <button class="filter-btn" onclick="filterNews('all')" data-cat="all">Alle Themen</button>
     <button class="filter-btn" onclick="filterNews('tech')" data-cat="tech">Tech & AI</button>
     <button class="filter-btn" onclick="filterNews('business')" data-cat="business">Wirtschaft</button>
     <button class="filter-btn" onclick="filterNews('culture')" data-cat="culture">Kultur</button>
     <button class="filter-btn" onclick="filterNews('travel')" data-cat="travel">Reisen</button>
     <button class="filter-btn" onclick="filterNews('psychology')" data-cat="psychology">Psychologie</button>
     <button class="filter-btn" onclick="filterNews('politik')" data-cat="politik">Politik</button>
-    <button class="filter-btn" onclick="filterNews('trending')" data-cat="trending">Meistgelesen</button>
   </div>
 </nav>
 
@@ -267,7 +272,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">AI <em>George</em> · Nachrichten</div>
+    <div class="footer-brand">AI <em>George</em> · Nachrichten mit KI-Blick</div>
     <div class="footer-links">
       <a href="#" onclick="openModal('contact')">Kontakt</a>
       <a href="#" onclick="openModal('agb')">AGB</a>
@@ -421,11 +426,14 @@ function commentBlock(item){
     const comments=item.readerComments||[];
     const delBtn=isAdmin?`<button onclick="deleteComment('${id}')" style="margin-left:auto;font-size:10px;color:rgba(192,57,43,.35);background:none;border:none;cursor:pointer;padding:2px 6px;" onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='rgba(192,57,43,.35)'">&#10005;</button>`:'';
     const existingComments=comments.map(c=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-size:11px;color:var(--text-light);margin-bottom:3px;">${c.time}</div><div style="font-size:15px;color:var(--text-dark);line-height:1.6;">${c.text}</div></div>`).join('');
-    return`<div class="george-comment" data-id="${id}">
-      <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George &middot; Kommentar</span>${delBtn}<button class="gc-toggle" onclick="toggleGeorgeComment('${id}')" style="margin-left:auto;font-size:16px;line-height:1;color:var(--text-light);background:none;border:none;cursor:pointer;padding:2px 4px;" title="Schließen">−</button></div>
-      <div class="gc-body">
-      <p class="gc-text">${item.comment}</p>
-      <button onclick="readAloud(this,'${item.comment.replace(/'/g,String.fromCharCode(39))}',event)" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;margin-bottom:4px;padding:5px 12px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;" onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--text-light)'"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen</button>
+    return`<div class="george-comment" data-id="${id}" style="display:none;">
+      <div class="gc-label"><div class="gc-av">G</div><span class="gc-name">AI George &middot; Kommentar</span>${delBtn}</div>
+      <p class="gc-text gc-preview" id="gc-text-${id}">${item.comment}</p>
+      <button class="gc-read-more" id="gc-readmore-${id}" onclick="expandComment('${id}')">
+        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        Vollständigen Kommentar lesen
+      </button>
+      <button class="vorlesen-btn" data-text="${item.comment}" style="display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 10px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);background:none;border:1px solid var(--border);cursor:pointer;" onclick="readAloud(this,this.dataset.text,event)" onmouseover="this.style.color='var(--navy)'" onmouseout="this.style.color='var(--text-light)'"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen</button>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,.2);">
         <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--gold);margin-bottom:10px;">Ihre Meinung?</div>
         <div id="rc-list-${id}">${existingComments}</div>
@@ -436,10 +444,19 @@ function commentBlock(item){
             style="padding:9px 16px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;">Senden</button>
         </div>
       </div>
-      </div>
     </div>`;
   }
   return'';
+}
+function expandComment(id){
+  const para=document.getElementById('gc-text-'+id);
+  const btn=document.getElementById('gc-readmore-'+id);
+  if(!para)return;
+  para.classList.toggle('expanded');
+  const expanded=para.classList.contains('expanded');
+  btn.innerHTML=expanded
+    ?'<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg> Weniger anzeigen'
+    :'<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg> Vollständigen Kommentar lesen';
 }
 function actionsBlock(item){
   const id=item.id;
@@ -448,16 +465,11 @@ function actionsBlock(item){
   const rcCount=(item.readerComments||[]).length;
   const editBtn=isAdmin?`<button class="abtn" onclick="editArticle('${id}')" title="Bearbeiten" style="color:rgba(201,168,76,.5);">&#9998;</button>`:'';
   const delBtn=isAdmin?`<button class="abtn del" onclick="deleteArticle('${id}')" title="Löschen">&#10005;</button>`:'';
-  const gBtn=!item.comment&&!item.loading?`<button class="abtn" onclick="getComment('${id}')" title="George kommentiert"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${rcCount>0?' ('+rcCount+')':''}</button>`:'';
-  return`${editBtn}${delBtn}${gBtn}
-  <button class="abtn fb" onclick="share('fb','${u}','${t}')" title="Facebook"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button>
-  <button class="abtn wa" onclick="share('wa','${u}','${t}')" title="WhatsApp"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
-  <button class="abtn ms" onclick="share('ms','${u}','${t}')" title="Messenger"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.936 1.42 5.556 3.641 7.28V21l2.515-1.386C9.077 19.85 10.503 20 12 20c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.057 12.429l-2.571-2.857-4.9 2.857 5.457-5.714 2.571 2.857 4.9-2.857-5.457 5.714z"/></svg></button>
-  <button class="abtn xx" onclick="share('x','${u}','${t}')" title="X"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
-  <button class="abtn li" onclick="share('li','${u}','${t}')" title="LinkedIn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
-  <button class="abtn tg" onclick="share('tg','${u}','${t}')" title="Telegram"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.94c-.13.58-.47.72-.95.45l-2.6-1.92-1.26 1.2c-.14.14-.26.26-.53.26l.19-2.66 4.87-4.4c.21-.19-.05-.29-.32-.1L7.44 14.1l-2.55-.8c-.55-.17-.56-.55.12-.82l9.97-3.85c.46-.17.86.11.66.17z"/></svg></button>
-  <button class="abtn cp" onclick="share('copy','${u}','${t}')" title="Link kopieren"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
-`;
+  const commentBtn=!item.comment&&!item.loading
+    ?`<button class="abtn" onclick="getComment('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Kommentieren${rcCount>0?' ('+rcCount+')':''}</button>`
+    :`<button class="abtn" onclick="toggleGeorgeComment('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Kommentar lesen${rcCount>0?' ('+rcCount+')':''}</button>`;
+  const shareBtn=`<button class="abtn" onclick="toggleShareMenu('${id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Teilen</button><div id="share-${id}" style="display:none;flex-wrap:wrap;gap:6px;margin-top:6px;"><button class="abtn fb" onclick="share('fb','${u}','${t}')" title="Facebook"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button><button class="abtn wa" onclick="share('wa','${u}','${t}')" title="WhatsApp"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button><button class="abtn ms" onclick="share('ms','${u}','${t}')" title="Messenger"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.936 1.42 5.556 3.641 7.28V21l2.515-1.386C9.077 19.85 10.503 20 12 20c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.057 12.429l-2.571-2.857-4.9 2.857 5.457-5.714 2.571 2.857 4.9-2.857-5.457 5.714z"/></svg></button><button class="abtn xx" onclick="share('x','${u}','${t}')" title="X"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button><button class="abtn li" onclick="share('li','${u}','${t}')" title="LinkedIn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button><button class="abtn tg" onclick="share('tg','${u}','${t}')" title="Telegram"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.94c-.13.58-.47.72-.95.45l-2.6-1.92-1.26 1.2c-.14.14-.26.26-.53.26l.19-2.66 4.87-4.4c.21-.19-.05-.29-.32-.1L7.44 14.1l-2.55-.8c-.55-.17-.56-.55.12-.82l9.97-3.85c.46-.17.86.11.66.17z"/></svg></button><button class="abtn cp" onclick="share('copy','${u}','${t}')" title="Link"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></div>`;
+  return`${editBtn}${delBtn}${commentBtn}${shareBtn}`;
 }
 
 function renderFeatured(){
@@ -514,12 +526,8 @@ function renderTrending(){
 function toggleGeorgeComment(id){
   const el=document.querySelector('.george-comment[data-id="'+id+'"]');
   if(!el)return;
-  const body=el.querySelector('.gc-body');
-  const btn=el.querySelector('.gc-toggle');
-  if(!body)return;
-  const hidden=body.style.display==='none';
-  body.style.display=hidden?'':'none';
-  if(btn)btn.textContent=hidden?'−':'+';
+  const hidden=el.style.display==='none'||el.style.display==='';
+  el.style.display=hidden?'block':'none';
 }
 function timeAgo(ts){if(!ts)return'';const d=Math.floor((Date.now()-ts)/1000);if(d<60)return'gerade eben';if(d<3600)return'vor '+Math.floor(d/60)+' Min.';if(d<86400)return'vor '+Math.floor(d/3600)+' Std.';return'vor '+Math.floor(d/86400)+' Tag'+(Math.floor(d/86400)>1?'en':'');}
 function renderAll(){renderFeatured();renderList();}
@@ -810,6 +818,12 @@ function closeEdit() {
   document.getElementById('editOverlay').classList.remove('open');
 }
 
+function toggleShareMenu(id){
+  const el=document.getElementById('share-'+id);
+  if(!el)return;
+  const open=el.style.display==='flex';
+  el.style.display=open?'none':'flex';
+}
 function readAloud(btn, text, e) {
   if(e) e.stopPropagation();
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
