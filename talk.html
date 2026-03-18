@@ -16,8 +16,8 @@
 html,body{height:100%;font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark);}
 body{display:flex;flex-direction:column;min-height:100vh;}
 
-.topbar{background:var(--navy);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.topbar-brand{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+.topbar{background:var(--navy);padding:0 40px;position:sticky;top:0;z-index:200;}
+.topbar-brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0;text-decoration:none;}
 .topbar-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);letter-spacing:.02em;}
 .topbar-name em{font-style:italic;color:var(--gold);}
 .topbar-sub{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);}
@@ -126,12 +126,14 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 </head>
 <body>
 
-<div class="topbar">
+<div class="topbar" style="height:64px;display:flex;align-items:center;justify-content:space-between;">
+  <div style="max-width:1200px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
   <a class="topbar-brand" href="index.html">
     <div class="topbar-name">AI <em>George</em></div>
     <div class="topbar-sub">Nachrichten mit KI-Kommentar</div>
   </a>
   <a class="news-link" href="index.html" id="newsLink">← Nachrichten</a>
+  </div>
 </div>
 
 <div class="hero">
@@ -395,110 +397,30 @@ async function sendMessage() {
 document.getElementById('userInput').focus();
 
 function readAloud(btn, text, e) {
-  if(e)e.stopPropagation();
-  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
+  if(e) e.stopPropagation();
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
+  const stopIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';
   if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE'; u.rate=0.88; u.pitch=0.75;
-  function pickVoice(){
+  u.lang='de-DE'; u.rate=0.88; u.pitch=0.7;
+  function getBestMaleVoice(){
     const all=window.speechSynthesis.getVoices();
-    const deVoices=all.filter(v=>v.lang==='de-DE'||v.lang.startsWith('de'));
-    const femaleNames=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna|female|weiblich/i;
-    const maleNames=/stefan|hans|markus|georg|daniel|helmut|otto|reed|male|männlich/i;
-    const maleVoice=deVoices.find(v=>maleNames.test(v.name))||deVoices.find(v=>!femaleNames.test(v.name));
-    if(maleVoice) u.voice=maleVoice;
+    const de=all.filter(v=>v.lang==='de-DE'||v.lang.startsWith('de-'));
+    const priority=['stefan','hans','markus','georg','daniel','helmut','otto','reed','thomas'];
+    const female=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna/i;
+    for(const name of priority){const v=de.find(x=>x.name.toLowerCase().includes(name));if(v)return v;}
+    return de.find(v=>!female.test(v.name))||de[0]||null;
   }
-  function doSpeak(){
-    u.onstart=()=>{
-      btn.innerHTML=stopIcon;
-      const bubble=btn.closest('.msg-bubble');
-      if(bubble){
-        const words=text.split(/\s+/);
-        let wi=0;
-        u.onboundary=function(ev){
-          if(ev.name!=='word'||wi>=words.length) return;
-          bubble.innerHTML=words.map((w,i)=>i===wi?`<mark style="background:rgba(201,168,76,.35);border-radius:2px;padding:0 2px;">${w}</mark>`:w).join(' ')+'<br>'+btn.outerHTML;
-          wi++;
-        };
-      }
-    };
+  function speak(){
+    const v=getBestMaleVoice();
+    if(v) u.voice=v;
+    u.onstart=()=>{btn.innerHTML=stopIcon;};
     u.onend=()=>{btn.innerHTML=playIcon;};
     u.onerror=()=>{btn.innerHTML=playIcon;};
     window.speechSynthesis.speak(u);
   }
-  const voices=window.speechSynthesis.getVoices();
-  if(voices.length===0){window.speechSynthesis.onvoiceschanged=()=>{pickVoice();doSpeak();};}
-  else{pickVoice();doSpeak();}
+  if(!window.speechSynthesis.getVoices().length){
+    window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.onvoiceschanged=null;speak();};
+  } else { speak(); }
 }
-</script>
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-links">
-      <a onclick="openModal('kontakt')">Kontakt</a>
-      <a onclick="openModal('agb')">AGB</a>
-      <a onclick="openModal('datenschutz')">Datenschutz</a>
-      <a onclick="openModal('impressum')">Impressum</a>
-    </div>
-    <div class="footer-copy">© 2026 AI George · aigeorge.ch</div>
-  </div>
-</footer>
-
-<!-- MODALS -->
-<div class="modal-overlay" id="modal-kontakt" onclick="if(event.target===this)closeModal('kontakt')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('kontakt')">✕</button>
-    <div class="modal-title">Kontakt</div>
-    <div class="modal-body">
-      <p><strong>AI George</strong> ist ein KI-gestützter Nachrichtenkurator und Gesprächspartner.</p>
-      <br>
-      <p>Betrieben durch Swiss Halley AG / Fireflies Travel Community.</p>
-      <br>
-      <p>E-Mail: <a href="/cdn-cgi/l/email-protection#3f5e56585a504d585a115c577f58525e5653115c5052" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="f899919f9d978a9f9dd69b90b89f95999194d69b9795">[email&#160;protected]</span></a></p>
-      <br>
-      <p>Weil am Rhein, Deutschland / Schweiz</p>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-agb" onclick="if(event.target===this)closeModal('agb')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('agb')">✕</button>
-    <div class="modal-title">Allgemeine Geschäftsbedingungen</div>
-    <div class="modal-body">
-      <p>Die Nutzung von AI George erfolgt auf eigene Verantwortung. Die generierten Inhalte sind KI-basiert und stellen keine professionelle Rechts-, Finanz- oder medizinische Beratung dar.</p>
-      <br>
-      <p>AI George behält sich das Recht vor, den Dienst jederzeit zu ändern oder einzustellen. Die Inhalte dienen ausschließlich zur Information und Unterhaltung.</p>
-      <br>
-      <p>Alle Rechte an den AI George Inhalten liegen bei Swiss Halley AG / Fireflies Travel Community.</p>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-datenschutz" onclick="if(event.target===this)closeModal('datenschutz')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('datenschutz')">✕</button>
-    <div class="modal-title">Datenschutz</div>
-    <div class="modal-body">
-      <p>AI George speichert keine persönlichen Daten dauerhaft. Gesprächsverläufe werden nur für die Dauer der Sitzung im Browser-Speicher gehalten.</p>
-      <br>
-      <p>Für die KI-Antworten wird die Anthropic API genutzt. Es gelten die Datenschutzbestimmungen von Anthropic (anthropic.com/privacy).</p>
-      <br>
-      <p>Diese Website verwendet keine Tracking-Cookies oder Analysetools.</p>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-impressum" onclick="if(event.target===this)closeModal('impressum')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('impressum')">✕</button>
-    <div class="modal-title">Impressum</div>
-    <div class="modal-body">
-      <p><strong>AI George</strong></p>
-      <br>
-      <p>Betreiber: Swiss Halley AG / Fireflies Travel Community<br>
-      Weil am Rhein, Deutschland</p>
-      <br>
-      <p>E-Mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a7b737d7f75687d7f3479725a7d777b737634797577">[email&#160;protected]</a></p>
-      <br>
-      <p>Haftungshinweis: Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Die Inhalte werden teilwe
+e
