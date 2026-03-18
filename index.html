@@ -137,7 +137,7 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--gold);padding:10px 22px;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:all .3s;pointer-events:none;z-index:999;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 @media(max-width:900px){.main{grid-template-columns:1fr;gap:40px;padding:28px 20px;}.masthead,.filter-nav,.ticker-bar,footer{padding-left:20px;padding-right:20px;}.admin-inner{padding:20px;}.admin-form{grid-template-columns:1fr;}.sidebar{order:-1;}.gp{display:none;}.masthead-date{display:none;}}
-@media(max-width:600px){.news-item{grid-template-columns:1fr;}.news-item-img,.news-img-ph{width:100%;height:180px;order:-1;}.masthead-sub{display:none!important;}.masthead-name::after{content:" Nachrichten";}}
+@media(max-width:600px){.news-item{grid-template-columns:1fr;}.news-item-img,.news-img-ph{width:100%;height:180px;order:-1;}.masthead-sub{display:none!important;}}
 </style>
 </head>
 <body>
@@ -406,7 +406,7 @@ function catLabel(c){return{tech:'Tech & AI',business:'Wirtschaft',culture:'Kult
 function filterNews(cat){
   currentFilter=cat;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
-  if(cat==='trending'){renderTrendingPage();}else{renderAll();}
+  if(cat==='trending'){renderTrendingPage();}else if(cat==='neueste'){currentFilter='all';renderAll();}else{renderAll();}
 }
 function renderTrendingPage(){
   document.getElementById('featuredSection').style.display='none';
@@ -816,22 +816,60 @@ function readAloud(btn, text, e) {
   const playIcon='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Vorlesen';
   if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();btn.innerHTML=playIcon;return;}
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE';u.rate=0.88;u.pitch=0.85;
-  function setVoice(){
-    const voices=window.speechSynthesis.getVoices();
-    // Priority: Google Deutsch male, then any de male, then any de
-    const male = voices.find(v=>v.lang==='de-DE'&&/stefan|hans|markus|georg|daniel|helmut|male|männlich/i.test(v.name))
-      || voices.find(v=>v.lang==='de-DE'&&!/female|weiblich|anna|petra|sabine|marlene|karen|lisa/i.test(v.name))
-      || voices.find(v=>v.lang.startsWith('de'));
-    if(male){u.voice=male;}
-    u.onstart=()=>{btn.innerHTML=stopIcon;};
-    u.onend=()=>{btn.innerHTML=playIcon;};
-    u.onerror=()=>{btn.innerHTML=playIcon;};
-    window.speechSynthesis.speak(u);
+  u.lang='de-DE'; u.rate=0.88; u.pitch=0.75;
+  function pickVoice(){
+    const all=window.speechSynthesis.getVoices();
+    const deVoices=all.filter(v=>v.lang==='de-DE'||v.lang==='de_DE'||v.lang.startsWith('de'));
+    const femaleNames=/anna|petra|sabine|marlene|karen|lisa|marie|julia|sophie|hannah|katja|hedda|hanna|female|weiblich/i;
+    const maleNames=/stefan|hans|markus|georg|daniel|helmut|otto|bernd|male|männlich|reed|microsoft david/i;
+    const maleVoice = deVoices.find(v=>maleNames.test(v.name))
+      || deVoices.find(v=>!femaleNames.test(v.name));
+    if(maleVoice) u.voice=maleVoice;
   }
   const voices=window.speechSynthesis.getVoices();
-  if(voices.length===0){window.speechSynthesis.onvoiceschanged=setVoice;}
-  else{setVoice();}
+  if(voices.length===0){
+    window.speechSynthesis.onvoiceschanged=()=>{pickVoice(); doSpeak();};
+  } else {
+    pickVoice(); doSpeak();
+  }
+  function doSpeak(){
+    u.onstart=()=>{
+      btn.innerHTML=stopIcon;
+      startHighlight(btn, text, u);
+    };
+    u.onend=()=>{
+      btn.innerHTML=playIcon;
+      stopHighlight(btn);
+    };
+    u.onerror=()=>{btn.innerHTML=playIcon; stopHighlight(btn);};
+    window.speechSynthesis.speak(u);
+  }
+}
+function startHighlight(btn, text, u){
+  // Find the gc-text paragraph sibling
+  const bubble = btn.closest('.george-comment, .msg-bubble');
+  if(!bubble) return;
+  const para = bubble.querySelector('.gc-text') || bubble.querySelector('p');
+  if(!para) return;
+  const original = para.innerHTML;
+  para.dataset.original = original;
+  const words = text.split(/\s+/);
+  let wordIdx = 0;
+  u.onboundary = function(ev){
+    if(ev.name !== 'word') return;
+    if(wordIdx >= words.length) return;
+    const highlighted = words.map((w,i)=>
+      i===wordIdx ? `<mark style="background:rgba(201,168,76,.35);border-radius:2px;padding:0 2px;">${w}</mark>` : w
+    ).join(' ');
+    para.innerHTML = highlighted;
+    wordIdx++;
+  };
+}
+function stopHighlight(btn){
+  const bubble = btn.closest('.george-comment, .msg-bubble');
+  if(!bubble) return;
+  const para = bubble.querySelector('.gc-text') || bubble.querySelector('p');
+  if(para && para.dataset.original) para.innerHTML = para.dataset.original;
 }
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -840,6 +878,7 @@ function showToast(msg){
 }
 
 updateAdminUI();
+currentFilter='all';
 renderAll();
 renderTrending();
 updateCount();
