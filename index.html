@@ -498,14 +498,14 @@ function renderFeatured(){
   lnk.href=f.url||'#';lnk.textContent=f.title;
   document.getElementById('featuredSummary').textContent=f.summary;
   document.getElementById('featuredSource').textContent=f.source;
-  document.getElementById('featuredTime').textContent=f.time;
+  document.getElementById('featuredTime').textContent=f.ts?formatDate(f.ts):f.time;
   const rmLink=f.url?`<a href="${f.url}" target="_blank" rel="noopener" class="read-more-link" style="margin-bottom:16px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Vollständigen Artikel lesen</a>`:'';
   document.getElementById('featuredComment').innerHTML=rmLink+commentBlock(f);
   document.getElementById('featuredActions').innerHTML=actionsBlock(f);
 }
 
 function renderList(){
-  const items=newsData.filter(n=>n.id!=='featured'&&(currentFilter==='all'||n.cat===currentFilter));
+  const items=newsData.filter(n=>n.id!=='featured'&&(currentFilter==='all'||n.cat===currentFilter)).sort((a,b)=>(b.ts||0)-(a.ts||0));
   const list=document.getElementById('newsList');
   if(!items.length){list.innerHTML='<div class="empty-state">Keine Artikel in dieser Kategorie.</div>';return;}
   list.innerHTML=items.map(n=>`
@@ -514,7 +514,7 @@ function renderList(){
         <div class="news-item-header">
           <span class="cat-tag">${catLabel(n.cat)}</span>
           <span class="news-source">${n.source}</span>
-          <span class="news-time">${n.ts?timeAgo(n.ts):n.time}</span>
+          <span class="news-time">${n.ts?formatDate(n.ts):n.time}</span>
         </div>
         <a href="${n.url||'#'}" target="_blank" rel="noopener" class="news-title">${n.title}</a>
         <p class="news-summary">${n.summary}</p>
@@ -539,6 +539,7 @@ function renderTrending(){
 }
 
 function timeAgo(ts){if(!ts)return'';const d=Math.floor((Date.now()-ts)/1000);if(d<60)return'gerade eben';if(d<3600)return'vor '+Math.floor(d/60)+' Min.';if(d<86400)return'vor '+Math.floor(d/3600)+' Std.';return'vor '+Math.floor(d/86400)+' Tag'+(Math.floor(d/86400)>1?'en':'');}
+function formatDate(ts){if(!ts)return'';const d=Math.floor((Date.now()-ts)/1000);const date=new Date(ts);const dd=String(date.getDate()).padStart(2,'0');const mm=String(date.getMonth()+1).padStart(2,'0');const yy=date.getFullYear();const dateStr=dd+'.'+mm+'.'+yy;if(d<3600)return'vor '+Math.floor(d/60)+' Min.';if(d<86400)return'heute, '+date.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';if(d<172800)return'gestern · '+dateStr;return dateStr;}
 function renderAll(){renderFeatured();renderList();}
 
 async function getComment(id){
@@ -945,20 +946,27 @@ function doSearch(query) {
 }
 
 function scrollToArticle(id) {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('searchResults').style.display = 'none';
   if (id === 'featured') {
-    document.getElementById('featuredSection').scrollIntoView({behavior:'smooth', block:'start'});
+    currentFilter='all';
+    renderAll();
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'neueste'));
+    setTimeout(() => {
+      const el = document.getElementById('featuredSection');
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 150);
     return;
   }
-  filterNews('neueste');
+  currentFilter='all';
+  renderAll();
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'neueste'));
   setTimeout(() => {
-    const items = document.querySelectorAll('.news-item');
     const allNews = newsData.filter(n => n.id !== 'featured');
     const idx = allNews.findIndex(n => String(n.id) === String(id));
-    if (idx >= 0 && items[idx]) items[idx].scrollIntoView({behavior:'smooth', block:'start'});
-  }, 100);
+    const items = document.querySelectorAll('.news-item');
+    if (idx >= 0 && items[idx]) {
+      items[idx].scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }, 150);
 }
 function showToast(msg){
   const t=document.getElementById('toast');
