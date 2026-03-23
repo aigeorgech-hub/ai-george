@@ -946,27 +946,23 @@ function doSearch(query) {
 }
 
 function scrollToArticle(id) {
+  window.scrollTo({top: 0, behavior: 'smooth'});
   if (id === 'featured') {
     currentFilter='all';
     renderAll();
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'neueste'));
-    setTimeout(() => {
-      const el = document.getElementById('featuredSection');
-      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-    }, 150);
     return;
+  }
+  // Move clicked article to top of list temporarily
+  const idx = newsData.findIndex(n => String(n.id) === String(id));
+  if (idx > 0) {
+    const item = newsData.splice(idx, 1)[0];
+    const firstNonFeatured = newsData.findIndex(n => n.id !== 'featured');
+    newsData.splice(firstNonFeatured, 0, item);
   }
   currentFilter='all';
   renderAll();
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'neueste'));
-  setTimeout(() => {
-    const allNews = newsData.filter(n => n.id !== 'featured');
-    const idx = allNews.findIndex(n => String(n.id) === String(id));
-    const items = document.querySelectorAll('.news-item');
-    if (idx >= 0 && items[idx]) {
-      items[idx].scrollIntoView({behavior:'smooth', block:'start'});
-    }
-  }, 150);
 }
 function showToast(msg){
   const t=document.getElementById('toast');
