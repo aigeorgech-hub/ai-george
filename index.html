@@ -125,6 +125,23 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text-dark
 .gq-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;line-height:1.6;color:var(--navy);margin-bottom:8px;}
 .gq-attr{font-size:11px;color:var(--text-light);letter-spacing:.1em;}
 .empty-state{padding:48px 0;text-align:center;color:var(--text-light);font-size:14px;}
+.search-box{margin-top:20px;}
+.search-input-wrap{display:flex;gap:0;}
+.search-input-wrap input{flex:1;padding:10px 14px;font-family:'Jost',sans-serif;font-size:13px;border:1px solid var(--border);border-right:none;outline:none;background:var(--white);color:var(--text-dark);}
+.search-input-wrap input:focus{border-color:var(--gold);}
+.search-input-wrap input::placeholder{color:var(--text-light);}
+.search-btn{padding:10px 14px;background:var(--navy);color:var(--gold);border:none;cursor:pointer;transition:background .2s;}
+.search-btn:hover{background:var(--navy-mid);}
+.search-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:block;}
+.search-results{margin-top:12px;display:none;}
+.search-result-item{padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s;}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:var(--cream);}
+.search-result-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--navy);margin-bottom:3px;font-weight:400;}
+.search-result-excerpt{font-size:12px;color:var(--text-light);line-height:1.5;}
+.search-result-tag{display:inline-block;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.search-empty{font-size:13px;color:var(--text-light);font-style:italic;padding:12px 0;text-align:center;}
+.search-highlight{background:rgba(201,168,76,.25);border-radius:2px;padding:0 2px;}
 footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .footer-brand{font-family:'Cormorant Garamond',serif;font-size:17px;color:rgba(255,255,255,.5);}
@@ -265,6 +282,15 @@ footer{background:var(--navy);padding:28px 40px;margin-top:60px;}
     <div class="sidebar-section">
       <div class="sb-title">George sagt heute</div>
       <div class="gq"><p class="gq-text" id="dailyQuote"></p><div class="gq-attr">— AI George</div></div>
+      <div class="search-box">
+        <div class="search-input-wrap">
+          <input type="text" id="searchInput" placeholder="Artikel durchsuchen…" oninput="doSearch(this.value)" onkeydown="if(event.key==='Escape'){this.value='';doSearch('');}">
+          <button class="search-btn" onclick="doSearch(document.getElementById('searchInput').value)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
     </div>
     <div class="sidebar-section" style="display:none;">
       <div class="sb-title">Meistgelesen</div>
@@ -872,6 +898,67 @@ function clearHighlight(){
     window._hlPara.textContent=window._hlOrig;
     window._hlPara=null;window._hlOrig=null;
   }
+}
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return text.replace(re, '<span class="search-highlight">$1</span>');
+}
+
+function doSearch(query) {
+  const q = query.trim().toLowerCase();
+  const resultsEl = document.getElementById('searchResults');
+  if (!q || q.length < 2) { resultsEl.style.display = 'none'; resultsEl.innerHTML = ''; return; }
+  resultsEl.style.display = 'block';
+  const results = newsData.filter(n => {
+    const title = (n.title || '').toLowerCase();
+    const summary = (n.summary || '').toLowerCase();
+    const comment = (n.comment || '').toLowerCase();
+    return title.includes(q) || summary.includes(q) || comment.includes(q);
+  });
+  if (!results.length) {
+    resultsEl.innerHTML = '<div class="search-empty">Keine Ergebnisse für „' + query + '"</div>';
+    return;
+  }
+  resultsEl.innerHTML = results.slice(0, 6).map(n => {
+    const titleHL = highlight(n.title || '', query);
+    let excerpt = '';
+    const lq = query.toLowerCase();
+    if ((n.summary || '').toLowerCase().includes(lq)) {
+      const idx = n.summary.toLowerCase().indexOf(lq);
+      const start = Math.max(0, idx - 40);
+      excerpt = (start > 0 ? '…' : '') + n.summary.slice(start, idx + 80) + '…';
+    } else if ((n.comment || '').toLowerCase().includes(lq)) {
+      const idx = n.comment.toLowerCase().indexOf(lq);
+      const start = Math.max(0, idx - 40);
+      excerpt = 'Kommentar: ' + (start > 0 ? '…' : '') + n.comment.slice(start, idx + 80) + '…';
+    }
+    const excerptHL = highlight(excerpt, query);
+    const tag = n.id === 'featured' ? 'Aufmacher' : catLabel(n.cat);
+    return '<div class="search-result-item" onclick="scrollToArticle(' + JSON.stringify(String(n.id)) + ')">' 
+      + '<div class="search-result-tag">' + tag + '</div>'
+      + '<div class="search-result-title">' + titleHL + '</div>'
+      + (excerptHL ? '<div class="search-result-excerpt">' + excerptHL + '</div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function scrollToArticle(id) {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').style.display = 'none';
+  if (id === 'featured') {
+    document.getElementById('featuredSection').scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+  filterNews('neueste');
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'neueste'));
+  setTimeout(() => {
+    const items = document.querySelectorAll('.news-item');
+    const allNews = newsData.filter(n => n.id !== 'featured');
+    const idx = allNews.findIndex(n => String(n.id) === String(id));
+    if (idx >= 0 && items[idx]) items[idx].scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
 }
 function showToast(msg){
   const t=document.getElementById('toast');
